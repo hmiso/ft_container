@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bidirectional.hpp                                  :+:      :+:    :+:   */
+/*   RamdomIT.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/23 07:17:12 by hmiso             #+#    #+#             */
-/*   Updated: 2021/04/23 07:51:12 by hmiso            ###   ########.fr       */
+/*   Created: 2021/04/23 07:51:18 by hmiso             #+#    #+#             */
+/*   Updated: 2021/04/23 07:55:25 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
 #include <memory>
 
-
 template <typename T, typename Pointer, typename Reference>
-class BidirectIt
+class RamdomIT
 {
 public:
 	typedef ptrdiff_t 		difference_type;
@@ -27,7 +25,7 @@ public:
 
 
 template <typename T, typename Pointer, typename Reference>
-class RevBidirectIt
+class RevRamdomIT
 {
 public:
 	typedef ptrdiff_t 		difference_type;

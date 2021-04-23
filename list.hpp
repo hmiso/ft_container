@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/04/23 07:36:49 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/04/23 09:03:01 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ namespace ft{
 		
 		~list();
 
+		iterator begin();
+		const_iterator begin() const;
+		iterator end();
+		const_iterator end() const;		
+    	reverse_iterator rbegin();
+		const_reverse_iterator rbegin() const;		
+		
 		bool empty() const{}
 		// Значение true, если размер контейнера равен 0 , в противном случае - значение false .
 		size_type size() const{}
