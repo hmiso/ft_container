@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/04/23 09:03:01 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/04/26 15:55:11 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,18 @@
 #include "iterator/Bidirectional.hpp"
 // по идее это надстройка над двухсвязным списком где сам список?
 namespace ft{
-	template < typename T, typename ALLoc = allocator<T> > class list{
+	template < typename T, typename Alloc = allocator<T> > class list{
+	private:
+
 	public:
 		typedef T															value_type;
-		typedef ALLoc               										allocator_type; 
+		typedef Alloc               										allocator_type; 
 		typedef T&															reference;
 		typedef const T&													const_reference;
 		typedef T*															pointer;
 		typedef const T*													const_pointer;
-		typedef BidirectIt<value_type, pointer, reference>					iterator;
+		typedef listIterator<T>
+		// по аналогии												iterator;
 		typedef BidirectIt<value_type, const_pointer, const_reference>		const_iterator;
 		typedef RevBidirectIt<value_type, pointer, reference>				reverse_iterator;
 		typedef RevBidirectIt<value_type, const_pointer, const_reference>	const_reverse_iterator;
@@ -51,7 +54,7 @@ namespace ft{
 		iterator begin();
 		const_iterator begin() const;
 		iterator end();
-		const_iterator end() const;		
+		const_iterator end() const;
     	reverse_iterator rbegin();
 		const_reverse_iterator rbegin() const;		
 		
