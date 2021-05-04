@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/04/26 15:55:11 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/04 11:05:11 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <memory>
 
 #include "Allocator.hpp"
-#include "iterator/Bidirectional.hpp"
+#include "iterator/listIterator.hpp"
 // по идее это надстройка над двухсвязным списком где сам список?
 namespace ft{
 	template < typename T, typename Alloc = allocator<T> > class list{
@@ -30,11 +30,11 @@ namespace ft{
 		typedef const T&													const_reference;
 		typedef T*															pointer;
 		typedef const T*													const_pointer;
-		typedef listIterator<T>
+		typedef listIterator<T>												iterator;
 		// по аналогии												iterator;
-		typedef BidirectIt<value_type, const_pointer, const_reference>		const_iterator;
-		typedef RevBidirectIt<value_type, pointer, reference>				reverse_iterator;
-		typedef RevBidirectIt<value_type, const_pointer, const_reference>	const_reverse_iterator;
+		typedef listIterator<T>												const_iterator;
+		// typedef RevBidirectIt<value_type, pointer, reference>				reverse_iterator;
+		// typedef RevBidirectIt<value_type, const_pointer, const_reference>	const_reverse_iterator;
 		typedef ptrdiff_t 													difference_type;
 		typedef size_t														size_type;
 
