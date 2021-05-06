@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/05 17:03:46 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/06 20:43:43 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 #include "iterator/listIterator.hpp"
 #include "iterator/node.hpp"
 
+
 namespace ft{
 	template < typename T, typename Alloc = allocator<T> > class list{
-	private:
 
 	public:
 		typedef T															value_type;
@@ -38,8 +38,17 @@ namespace ft{
 		typedef ptrdiff_t 													difference_type;
 		typedef size_t														size_type;
 
+		private:
+		node<T> *current;
+		allocator_type alloc;
+		node<T> *start;
+		public:
 // конструкторы
-		explicit list (const allocator_type& alloc = allocator_type()){} // нужно для неявного преобразования если мы передадим не то значение 
+		explicit list (const allocator_type& alloc = allocator_type()){
+			this->start = NULL;
+			this->current = NULL;
+			this->alloc = alloc; 
+		} // нужно для неявного преобразования если мы передадим не то значение 
 		// хз вообще что это Создает пустой контейнер без элементов. https://www.cplusplus.com/reference/list/list/empty/
 		explicit list (size_type n, const value_type& val = value_type(), const  allocator_type& alloc = allocator_type()){}
 		// Создает контейнер из n элементов. Каждый элемент является копией val .
@@ -48,11 +57,23 @@ namespace ft{
 		// Создает контейнер с таким количеством элементов, как диапазон [первый, последний) , причем каждый элемент создается из соответствующего ему элемента в этом диапазоне в том же порядке.
 		list (const list& x){}
 // конструкторы
-		
-		~list();
+	
+		~list(){}
 
-		iterator begin(){}
-		const_iterator begin() const;
+		iterator begin(){
+			node<T> *temp = this->current;
+			while(temp->ptrPrevie != NULL){
+				temp = temp->ptrPrevie;
+			}
+			return temp;
+		};
+		const_iterator begin() const{
+			node<T> *temp = this->current;
+			while(temp->ptrPrevie != NULL){
+				temp = temp->ptrPrevie;
+			}
+			return temp;	
+		}
 		iterator end();
 		const_iterator end() const;
     	reverse_iterator rbegin();
@@ -80,7 +101,18 @@ namespace ft{
 		// Вставляет новый элемент в начало списка, прямо перед его текущим первым элементом. Содержимое val копируется (или перемещается) во вставленный элемент. Это эффективно увеличивает размер контейнера на единицу.
 		void pop_front();
 		// Удаляет первый элемент в контейнере списка, эффективно уменьшая его размер на единицу. Это разрушает удаленный элемент.
-		void push_back (const value_type& val);
+		void push_back (const value_type& val){
+
+			if (this->current == NULL){
+				node<T> *ptr = new node<value_type>(val);
+				this->current = ptr;
+			}
+			else{
+				node<T> *ptr = new node<value_type>(val, this->current);
+				this->current = ptr;
+				this->current->ptrPrevie->ptrNext = this->current;
+			}
+		}
 		// Добавляет новый элемент в конец контейнера списка после его текущего последнего элемента. Содержимое val копируется (или перемещается) в новый элемент.
 		void pop_back();
 		// Удаляет последний элемент в контейнере списка, эффективно уменьшая размер контейнера на единицу. Это разрушает удаленный элемент
@@ -138,22 +170,22 @@ namespace ft{
 
 
 template <class T, class Alloc>
-  bool operator == (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator== (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator != (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator!= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator <  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator<  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator <= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator<= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator >  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator>  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator >= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator>= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
 void swap (ft::list<T,Alloc>& x, ft::list<T,Alloc>& y);

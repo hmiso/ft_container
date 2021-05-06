@@ -1,1 +1,1 @@
-clang++ Allocator.hpp list.hpp iterator/iterator.hpp iterator/listIterator.hpp  iterator/node.hpp
+clang++ -g Allocator.hpp list.hpp iterator/iterator.hpp iterator/listIterator.hpp  iterator/node.hpp test.cpp

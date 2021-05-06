@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:11 by hmiso             #+#    #+#             */
-/*   Updated: 2021/04/23 08:36:56 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/06 11:14:02 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 
 #include <memory>
 #include "Allocator.hpp"
-#include "iterator/RamdomIT.hpp"
+#include "iterator/vectorIterator.hpp"
 
 namespace ft{
 
-		template < class T, typename ALLoc = allocator<T> >  class vector{
+		template < class T, typename Alloc = allocator<T> >  class vector{
 			typedef T 															value_type;
 			typedef Alloc														allocator_type;
 			typedef T&															reference;
 			typedef const T&													const_reference;
 			typedef T*															pointer;
 			typedef const T*													const_pointer;
-			typedef RamdomIT<value_type, pointer, reference>					iterator;
-			typedef RamdomIT<value_type, const_pointer, const_reference>		const_iterator;
-			typedef RevRamdomIT<value_type, pointer, reference>					reverse_iterator;
-			typedef RevRamdomIT<value_type, const_pointer, const_reference>		const_reverse_iterator;
+			typedef vectorIterator<T>											iterator;
+			typedef vectorIterator<T>											const_iterator;
+			typedef RevvectorIterator<T>										reverse_iterator;
+			typedef RevvectorIterator<T>										const_reverse_iterator;
 			typedef ptrdiff_t 													difference_type;
 			typedef size_t														size_type;
 

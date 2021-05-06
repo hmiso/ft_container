@@ -38,22 +38,19 @@ public:
         this->ptr = NULL;
     }
 
-    listIterator(const node<T> *ptr){
+    listIterator(node<T> *ptr){
         this->ptr = ptr;
     }
     listIterator(const listIterator &ptr){
-        this->ptr = ptr;
+        this->ptr = ptr.ptr;
     }
 	
     ~listIterator(){}
 
-    listIterator &operator = (const node<T> *ptr){
-        this->ptr->data = ptr->data;
-        this->ptr->ptrNext = ptr->ptrNext;
-        this->ptr->ptrPrevie = ptr->ptrPrevie;
+    listIterator &operator = (const listIterator &ptr){
+        this->ptr = ptr.ptr;
         return (*this);
     }
-
     bool operator == (const node<T> *ptr){
         if (this->ptr == ptr){
             return true;
@@ -79,8 +76,8 @@ public:
         return *this;
     }
     listIterator operator++(int){
-        listIterator *tmp;
-        tmp = this->ptr->ptrNext;
+        listIterator tmp(*this);
+        tmp = tmp.ptr->ptrNext;
         return tmp;
     }
     listIterator &operator--(){

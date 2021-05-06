@@ -5,7 +5,6 @@
 template <typename T>
 class node{
     typedef T         value_type;
-    typedef node*     node_pointer;
     public:
         node *ptrNext;
         node *ptrPrevie;
