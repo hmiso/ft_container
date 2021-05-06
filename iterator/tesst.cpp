@@ -91,6 +91,24 @@ public:
     pointer operator -> () const {
         return &(this->ptr->data);
     }
+    listIterator &operator++(){
+        this->ptr = this->ptr->ptrNext;
+        return *this;
+    }
+    listIterator operator++(int){
+        listIterator *tmp;
+        tmp = this->ptr->ptrNext;
+        return tmp;
+    }
+    listIterator &operator--(){
+        this->ptr = this->ptr->ptrPrevie;
+        return *this;
+    }
+    listIterator operator--(int){
+        listIterator *tmp;
+        tmp = this->ptr->ptrPrevie;
+        return tmp;        
+    }
 };
 
 

@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/04 11:05:11 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/05 17:03:46 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 #include "Allocator.hpp"
 #include "iterator/listIterator.hpp"
-// по идее это надстройка над двухсвязным списком где сам список?
+#include "iterator/node.hpp"
+
 namespace ft{
 	template < typename T, typename Alloc = allocator<T> > class list{
 	private:
@@ -31,10 +32,9 @@ namespace ft{
 		typedef T*															pointer;
 		typedef const T*													const_pointer;
 		typedef listIterator<T>												iterator;
-		// по аналогии												iterator;
 		typedef listIterator<T>												const_iterator;
-		// typedef RevBidirectIt<value_type, pointer, reference>				reverse_iterator;
-		// typedef RevBidirectIt<value_type, const_pointer, const_reference>	const_reverse_iterator;
+		typedef RevlistIterator<T>											reverse_iterator;
+		typedef RevlistIterator<T>											const_reverse_iterator;
 		typedef ptrdiff_t 													difference_type;
 		typedef size_t														size_type;
 
@@ -51,7 +51,7 @@ namespace ft{
 		
 		~list();
 
-		iterator begin();
+		iterator begin(){}
 		const_iterator begin() const;
 		iterator end();
 		const_iterator end() const;
@@ -138,22 +138,22 @@ namespace ft{
 
 
 template <class T, class Alloc>
-  bool operator== (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator == (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator!= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator != (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator<  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator <  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator<= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator <= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator>  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator >  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
-  bool operator>= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator >= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
 
 template <class T, class Alloc>
 void swap (ft::list<T,Alloc>& x, ft::list<T,Alloc>& y);
