@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/07 15:04:58 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/07 18:08:34 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ namespace ft{
 				temp = temp->ptrPrevie;
 			}
 			return(iterator(temp));
-		};
+		}
 		const_iterator begin() const{
 			node<T> *temp = this->current;
 			while(temp->ptrPrevie != NULL){

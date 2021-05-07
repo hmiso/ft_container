@@ -168,7 +168,7 @@ class ConstlistIterator : public iterator<std::bidirectional_iterator_tag, T>
 	typedef const T&	reference;
 
 public:
-    const node<T> *ptr;
+    node<const T> *ptr;
 
     ConstlistIterator(){
         this->ptr = NULL;
@@ -183,7 +183,7 @@ public:
 	
     ~ConstlistIterator(){}
 
-    ConstlistIterator &operator= (const ConstlistIterator &ptr){
+    ConstlistIterator &operator= (ConstlistIterator &ptr){
         this->ptr = ptr.ptr;
         return (*this);
     }
