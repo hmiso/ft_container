@@ -30,7 +30,6 @@ class listIterator : public iterator<std::bidirectional_iterator_tag, T>
 	typedef	T*		pointer;
 	typedef T&		reference;
 
-
 public:
     node<T> *ptr;
 
@@ -158,6 +157,72 @@ public:
     RevlistIterator operator--(int){
         RevlistIterator *tmp;
         tmp = this->ptr->ptrNext;
+        return tmp;        
+    }
+};
+
+template <typename T>
+class ConstlistIterator : public iterator<std::bidirectional_iterator_tag, T>
+{
+	typedef	const T		pointer;
+	typedef const T&	reference;
+
+public:
+    const node<T> *ptr;
+
+    ConstlistIterator(){
+        this->ptr = NULL;
+    }
+
+    ConstlistIterator(node<T> *ptr){
+        this->ptr = ptr;
+    }
+    ConstlistIterator(const ConstlistIterator &ptr){
+        this->ptr = ptr.ptr;
+    }
+	
+    ~ConstlistIterator(){}
+
+    ConstlistIterator &operator= (const ConstlistIterator &ptr){
+        this->ptr = ptr.ptr;
+        return (*this);
+    }
+    bool operator == (const node<T> *ptr){
+        if (this->ptr == ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (const node<T> *ptr){
+        if (this->ptr != ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    reference    operator*() const{
+        return this->ptr->data;
+    }
+    pointer operator -> () const {
+        return &(this->ptr->data);
+    }
+    ConstlistIterator &operator++(){
+        this->ptr = this->ptr->ptrNext;
+        return *this;
+    }
+    ConstlistIterator operator++(int){
+        ConstlistIterator tmp(*this);
+        tmp = tmp.ptr->ptrNext;
+        return tmp;
+    }
+    ConstlistIterator &operator--(){
+        this->ptr = this->ptr->ptrPrevie;
+        return *this;
+    }
+    ConstlistIterator operator--(int){
+        ConstlistIterator *tmp;
+        tmp = this->ptr->ptrPrevie;
         return tmp;        
     }
 };

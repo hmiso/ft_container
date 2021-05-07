@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/06 20:43:43 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/07 15:04:58 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft{
 		typedef T*															pointer;
 		typedef const T*													const_pointer;
 		typedef listIterator<T>												iterator;
-		typedef listIterator<T>												const_iterator;
+		typedef ConstlistIterator<T>										const_iterator;
 		typedef RevlistIterator<T>											reverse_iterator;
 		typedef RevlistIterator<T>											const_reverse_iterator;
 		typedef ptrdiff_t 													difference_type;
@@ -65,14 +65,14 @@ namespace ft{
 			while(temp->ptrPrevie != NULL){
 				temp = temp->ptrPrevie;
 			}
-			return temp;
+			return(iterator(temp));
 		};
 		const_iterator begin() const{
 			node<T> *temp = this->current;
 			while(temp->ptrPrevie != NULL){
 				temp = temp->ptrPrevie;
 			}
-			return temp;	
+			return(const_iterator(temp));
 		}
 		iterator end();
 		const_iterator end() const;
