@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/07 18:08:34 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/08 13:13:02 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,25 +79,77 @@ namespace ft{
     	reverse_iterator rbegin();
 		const_reverse_iterator rbegin() const;		
 		
-		bool empty() const{}
+		bool empty() const{
+			if (this->current == NULL){
+				return true;
+			} else {
+				return false;
+			}
+		}
 		// Значение true, если размер контейнера равен 0 , в противном случае - значение false .
-		size_type size() const{}
+		size_type size() const{
+			if (this->current == NULL){
+				return 0;
+			} else {
+				size_type count = 1;
+				node<T> *temp = this->current;
+				while (temp->ptrPrevie != NULL)
+				{
+					temp = temp->ptrPrevie;
+					count++;
+				}
+				return count;
+			}
+		}
 		// Возвращает количество элементов в контейнере списка .
-		size_type max_size() const {}
+		size_type max_size() const {
+			return std::numeric_limits<size_type>::max() / sizeof(value_type);
+		}
 		// Возвращает максимальное количество элементов, которое может содержать контейнер списка .
-		reference front();
+		reference front(){
+			node<T> *temp = this->current;
+			while (temp->ptrPrevie != NULL)
+			{
+				temp = temp->ptrPrevie;
+			}
+			return temp->data;
+		}
 		// Возвращает ссылку на первый элемент в контейнере списка . Для пустого контейнера не определенное поведение
-		const_reference front() const;
+		const_reference front() const{
+			node<T> *temp = this->current;
+			while (temp->ptrPrevie != NULL)
+			{
+				temp = temp->ptrPrevie;
+			}
+			return temp->data;
+		}
 		// Возвращает ссылку на первый элемент в контейнере списка . 
-		reference back();
-		const_reference back() const; 
+		reference back(){
+			return (this->current->data);
+		}
+		const_reference back() const{
+			return (this->current->data);
+		}
 		// Возвращает ссылку на последний элемент в контейнере списка .
 		template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last);
+  		void assign (InputIterator first, InputIterator last){
+			this->clear();
+			while(first != last){
+				this->push_back(first);
+				++first;
+			}
+		}
 		// В версии диапазона (1) новое содержимое - это элементы, составленные из каждого из элементов в диапазоне от первого до последнего в том же порядке.
-		void assign (size_type n, const value_type& val);
+		void assign (size_type n, const value_type& val){
+			size_type count;
+			while(count < n){
+				this->push_back(val);
+			}
+		}
 		// В версии заполнения (2) новое содержимое - это n элементов, каждый из которых инициализирован копией val .
-		void push_front (const value_type& val);
+		void push_front (const value_type& val){
+			
+		}
 		// Вставляет новый элемент в начало списка, прямо перед его текущим первым элементом. Содержимое val копируется (или перемещается) во вставленный элемент. Это эффективно увеличивает размер контейнера на единицу.
 		void pop_front();
 		// Удаляет первый элемент в контейнере списка, эффективно уменьшая его размер на единицу. Это разрушает удаленный элемент.
@@ -114,7 +166,13 @@ namespace ft{
 			}
 		}
 		// Добавляет новый элемент в конец контейнера списка после его текущего последнего элемента. Содержимое val копируется (или перемещается) в новый элемент.
-		void pop_back();
+		void pop_back(){
+			if (this->current){
+				node<T> *temp = this->current->ptrPrevie;
+				delete this->current;
+				this->current = temp;
+			}
+		}
 		// Удаляет последний элемент в контейнере списка, эффективно уменьшая размер контейнера на единицу. Это разрушает удаленный элемент
 		
 		iterator insert (iterator position, const value_type& val);
@@ -133,7 +191,11 @@ namespace ft{
 		void resize (size_type n, value_type val = value_type());
 		// Изменяет размер контейнера, чтобы он содержал n элементов. Если n меньше текущего размера контейнера, содержимое сокращается до первых n элементов, удаляя все остальные (и уничтожая их). Если n больше текущего размера контейнера, содержимое расширяется путем вставки в конце столько элементов, сколько необходимо для достижения размера n. Если указан val, новые элементы инициализируются как копии val, в противном случае они инициализируются значением.
 		
-		void clear();
+		void clear(){
+			while(current){
+				this->clear();
+			}
+		}
 		// даляет все элементы из контейнера списка (которые уничтожаются) и оставляет контейнер с размером 0.
 		
 		// Переносит элементы из x в контейнер, вставляя их в позицию. Это эффективно вставляет эти элементы в контейнер и удаляет их из x, изменяя размеры обоих контейнеров. Операция не предполагает строительства или разрушения какого-либо элемента. Они передаются независимо от того, является ли x значением lvalue или rvalue, или поддерживает ли value_type конструкцию перемещения или нет
