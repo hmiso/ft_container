@@ -6,6 +6,8 @@
 #include <memory>
 #include "node.hpp"
 
+template <typename T>
+class ConstlistIterator;
 // template <typename T>
 // class listIterator : public iterator<std::bidirectional_iterator_tag, T>
 // {
@@ -43,13 +45,19 @@ public:
     listIterator(const listIterator &ptr){
         this->ptr = ptr.ptr;
     }
-	
+	listIterator (const ConstlistIterator<T> &ptr){
+        this->ptr = ptr.getNode();
+    }
     ~listIterator(){}
 
     listIterator &operator = (const listIterator &ptr){
         this->ptr = ptr.ptr;
         return (*this);
     }
+    listIterator &operator = (const ConstlistIterator<T> &ptr){
+        this->ptr = ptr.getNode();
+        return (*this);
+    }    
     bool operator == (const node<T> *ptr){
         if (this->ptr == ptr){
             return true;
@@ -168,25 +176,33 @@ class ConstlistIterator : public iterator<std::bidirectional_iterator_tag, T>
 	typedef const T&	reference;
 
 public:
-    node<const T> *ptr;
+    const node<T> *ptr;
 
     ConstlistIterator(){
         this->ptr = NULL;
     }
-
+    node<T> *getNode() const {
+        return this->ptr;
+    }
     ConstlistIterator(node<T> *ptr){
         this->ptr = ptr;
     }
     ConstlistIterator(const ConstlistIterator &ptr){
         this->ptr = ptr.ptr;
     }
-	
+    ConstlistIterator(const listIterator<T> &ptr){
+        this->ptr = ptr.ptr;
+    }	
     ~ConstlistIterator(){}
 
-    ConstlistIterator &operator= (ConstlistIterator &ptr){
+    ConstlistIterator &operator= (const ConstlistIterator &ptr){
         this->ptr = ptr.ptr;
         return (*this);
     }
+    ConstlistIterator &operator= (const listIterator<T> &ptr){
+        this->ptr = ptr.ptr;
+        return (*this);
+    }    
     bool operator == (const node<T> *ptr){
         if (this->ptr == ptr){
             return true;
@@ -226,3 +242,6 @@ public:
         return tmp;        
     }
 };
+
+// сравнние констаннтых и обычных итераторов !!пше
+
