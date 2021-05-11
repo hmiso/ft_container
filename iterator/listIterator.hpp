@@ -72,6 +72,13 @@ public:
             return false;
         } // я правильно понимаю что сравнение идет по адресам а не значениям?
     }
+    bool operator != (listIterator ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }    
     reference    operator*() const{
         return this->ptr->data;
     }

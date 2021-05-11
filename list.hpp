@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/08 13:13:02 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/11 23:11:43 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,16 @@ namespace ft{
 			}
 			return(const_iterator(temp));
 		}
-		iterator end();
-		const_iterator end() const;
+		iterator end(){
+			iterator temp = iterator(current);
+			++temp;
+			return(temp);
+		}
+		const_iterator end() const{
+			const_iterator temp = const_iterator(current);
+			++temp;
+			return(temp);
+		}
     	reverse_iterator rbegin();
 		const_reverse_iterator rbegin() const;		
 		
@@ -107,12 +115,12 @@ namespace ft{
 		}
 		// Возвращает максимальное количество элементов, которое может содержать контейнер списка .
 		reference front(){
-			node<T> *temp = this->current;
-			while (temp->ptrPrevie != NULL)
-			{
-				temp = temp->ptrPrevie;
-			}
-			return temp->data;
+			// node<T> *temp = this->current;
+			// while (temp->ptrPrevie != NULL)
+			// {
+			// 	temp = temp->ptrPrevie;
+			// }
+			return this->start->data;
 		}
 		// Возвращает ссылку на первый элемент в контейнере списка . Для пустого контейнера не определенное поведение
 		const_reference front() const{
@@ -121,7 +129,7 @@ namespace ft{
 			{
 				temp = temp->ptrPrevie;
 			}
-			return temp->data;
+			return this->start->data;
 		}
 		// Возвращает ссылку на первый элемент в контейнере списка . 
 		reference back(){
@@ -148,16 +156,39 @@ namespace ft{
 		}
 		// В версии заполнения (2) новое содержимое - это n элементов, каждый из которых инициализирован копией val .
 		void push_front (const value_type& val){
-			
+			node<T> *ptr = new node<value_type>(val);
+			if (!current){
+				this->current = ptr;
+				this->start = ptr;
+			} else {
+				node<T> *tmp = this->current;
+				while (tmp->ptrPrevie)
+				{
+					tmp = tmp->ptrPrevie;
+				}
+				ptr->ptrNext = tmp;
+				tmp->ptrPrevie = ptr;
+				this->start = ptr;
+			}
 		}
 		// Вставляет новый элемент в начало списка, прямо перед его текущим первым элементом. Содержимое val копируется (или перемещается) во вставленный элемент. Это эффективно увеличивает размер контейнера на единицу.
-		void pop_front();
+		void pop_front(){
+			if (this->current){
+				node<T> *temp = this->current;
+				while (temp)
+				{
+					temp = temp->ptrPrevie;
+				}
+				delete temp;
+			}			
+		}
 		// Удаляет первый элемент в контейнере списка, эффективно уменьшая его размер на единицу. Это разрушает удаленный элемент.
 		void push_back (const value_type& val){
 
 			if (this->current == NULL){
 				node<T> *ptr = new node<value_type>(val);
 				this->current = ptr;
+				this->start = ptr;
 			}
 			else{
 				node<T> *ptr = new node<value_type>(val, this->current);
@@ -169,16 +200,37 @@ namespace ft{
 		void pop_back(){
 			if (this->current){
 				node<T> *temp = this->current->ptrPrevie;
+				temp->ptrNext = NULL;
 				delete this->current;
 				this->current = temp;
 			}
 		}
 		// Удаляет последний элемент в контейнере списка, эффективно уменьшая размер контейнера на единицу. Это разрушает удаленный элемент
 		
-		iterator insert (iterator position, const value_type& val);
-		void insert (iterator position, size_type n, const value_type& val);
+		iterator insert (iterator position, const value_type& val){
+			node<T> *temp = new node<T>(val);
+			temp->ptrNext = position.ptr;
+			temp->ptrPrevie = position.ptr->ptrPrevie;
+			temp->ptrPrevie->ptrNext = temp;
+			temp->ptrNext->ptrPrevie = temp;
+			return(iterator(temp));
+		}
+		void insert (iterator position, size_type n, const value_type& val){
+			size_t count = 0;
+			while (count < n)
+			{
+				this->insert(position, val);
+				count++;
+			}
+			
+		}
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last);
+		void insert (iterator position, InputIterator first, InputIterator last){
+			while (first != last){
+				insert(position, *first);
+				++first;
+			}
+		}
 		// Контейнер расширяется путем вставки новых элементов перед элементом в указанной позиции. 
 
 		iterator erase (iterator position);
@@ -193,7 +245,7 @@ namespace ft{
 		
 		void clear(){
 			while(current){
-				this->clear();
+				this->pop_back();
 			}
 		}
 		// даляет все элементы из контейнера списка (которые уничтожаются) и оставляет контейнер с размером 0.
