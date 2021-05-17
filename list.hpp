@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/11 23:11:43 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/17 22:24:25 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ namespace ft{
 		node<T> *current;
 		allocator_type alloc;
 		node<T> *start;
+		size_t size_list;
 		public:
 // конструкторы
 		explicit list (const allocator_type& alloc = allocator_type()){
 			this->start = NULL;
 			this->current = NULL;
 			this->alloc = alloc; 
+			this->size_list = 0;
 		} // нужно для неявного преобразования если мы передадим не то значение 
 		// хз вообще что это Создает пустой контейнер без элементов. https://www.cplusplus.com/reference/list/list/empty/
 		explicit list (size_type n, const value_type& val = value_type(), const  allocator_type& alloc = allocator_type()){}
@@ -75,7 +77,7 @@ namespace ft{
 			return(const_iterator(temp));
 		}
 		iterator end(){
-			iterator temp = iterator(current);
+			iterator temp = iterator(this->current);
 			++temp;
 			return(temp);
 		}
@@ -233,25 +235,60 @@ namespace ft{
 		}
 		// Контейнер расширяется путем вставки новых элементов перед элементом в указанной позиции. 
 
-		iterator erase (iterator position);
-		iterator erase (iterator first, iterator last);
+		iterator erase (iterator position){
+			node<T> *temp = position.ptr;
+			temp->ptrPrevie->ptrNext = temp->ptrNext;
+			temp->ptrNext->ptrPrevie = temp->ptrPrevie;
+			position++;
+			delete temp;
+			return position;
+		}
+		iterator erase (iterator first, iterator last){
+			while (first != last){
+				first = this->erase(first);
+			}
+			return (first);
+		}
 		// Удаляет из контейнера списка либо один элемент (позицию), либо диапазон элементов ([первый, последний))
 
-		void swap (list& x);
+		void swap (list<T> &x){
+			list<T> temp = *this;
+			*this = x;
+			x = temp;
+		}
 		// Заменяет содержимое контейнера содержимым x, который является другим списком того же типа. Размеры могут отличаться.
 		
-		void resize (size_type n, value_type val = value_type());
+		void resize (size_type n, value_type val = value_type()){
+			if (this->size() < n){
+				while (this->size() < n){
+					this->push_back(val);
+				}
+			} else {
+				while (this->size() > n){
+					this->pop_back();
+				}
+			}
+		}
 		// Изменяет размер контейнера, чтобы он содержал n элементов. Если n меньше текущего размера контейнера, содержимое сокращается до первых n элементов, удаляя все остальные (и уничтожая их). Если n больше текущего размера контейнера, содержимое расширяется путем вставки в конце столько элементов, сколько необходимо для достижения размера n. Если указан val, новые элементы инициализируются как копии val, в противном случае они инициализируются значением.
 		
 		void clear(){
-			while(current){
+			while(this->current){
 				this->pop_back();
 			}
 		}
 		// даляет все элементы из контейнера списка (которые уничтожаются) и оставляет контейнер с размером 0.
 		
 		// Переносит элементы из x в контейнер, вставляя их в позицию. Это эффективно вставляет эти элементы в контейнер и удаляет их из x, изменяя размеры обоих контейнеров. Операция не предполагает строительства или разрушения какого-либо элемента. Они передаются независимо от того, является ли x значением lvalue или rvalue, или поддерживает ли value_type конструкцию перемещения или нет
-		void splice (iterator position, list& x);
+		void splice (iterator position, list& x){
+			if (!x.empty()){
+				iterator start = x.begin();
+				iterator end = x.end();
+				position.ptr->ptrPrevie->ptrNext = start.ptr;
+				position.ptr->ptrNext->ptrPrevie = end.ptr;
+				start.ptr->ptrPrevie = position.ptr->ptrPrevie;
+				end.ptr = position.ptr;
+			}
+		}
 		// Первая версия (1) переносит все элементы x в контейнер
 		void splice (iterator position, list& x, iterator i);
 		// Вторая версия (2) переносит в контейнер только элемент, на который указывает i из x.
