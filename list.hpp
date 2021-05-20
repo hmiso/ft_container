@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:05 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/17 22:24:25 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/20 08:36:43 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ namespace ft{
 		allocator_type alloc;
 		node<T> *start;
 		size_t size_list;
+
 		public:
 // конструкторы
 		explicit list (const allocator_type& alloc = allocator_type()){
@@ -63,17 +64,12 @@ namespace ft{
 		~list(){}
 
 		iterator begin(){
-			node<T> *temp = this->current;
-			while(temp->ptrPrevie != NULL){
-				temp = temp->ptrPrevie;
-			}
+			node<T> *temp = this->start;
+
 			return(iterator(temp));
 		}
 		const_iterator begin() const{
-			node<T> *temp = this->current;
-			while(temp->ptrPrevie != NULL){
-				temp = temp->ptrPrevie;
-			}
+			node<T> *temp = this->start;
 			return(const_iterator(temp));
 		}
 		iterator end(){
@@ -82,7 +78,7 @@ namespace ft{
 			return(temp);
 		}
 		const_iterator end() const{
-			const_iterator temp = const_iterator(current);
+			const_iterator temp = const_iterator(this->current);
 			++temp;
 			return(temp);
 		}
@@ -90,7 +86,7 @@ namespace ft{
 		const_reverse_iterator rbegin() const;		
 		
 		bool empty() const{
-			if (this->current == NULL){
+			if (this->size_list == 0){
 				return true;
 			} else {
 				return false;
@@ -98,18 +94,7 @@ namespace ft{
 		}
 		// Значение true, если размер контейнера равен 0 , в противном случае - значение false .
 		size_type size() const{
-			if (this->current == NULL){
-				return 0;
-			} else {
-				size_type count = 1;
-				node<T> *temp = this->current;
-				while (temp->ptrPrevie != NULL)
-				{
-					temp = temp->ptrPrevie;
-					count++;
-				}
-				return count;
-			}
+			return this->size_list;
 		}
 		// Возвращает количество элементов в контейнере списка .
 		size_type max_size() const {
@@ -117,20 +102,11 @@ namespace ft{
 		}
 		// Возвращает максимальное количество элементов, которое может содержать контейнер списка .
 		reference front(){
-			// node<T> *temp = this->current;
-			// while (temp->ptrPrevie != NULL)
-			// {
-			// 	temp = temp->ptrPrevie;
-			// }
 			return this->start->data;
 		}
 		// Возвращает ссылку на первый элемент в контейнере списка . Для пустого контейнера не определенное поведение
 		const_reference front() const{
-			node<T> *temp = this->current;
-			while (temp->ptrPrevie != NULL)
-			{
-				temp = temp->ptrPrevie;
-			}
+			node<T> *temp = this->start;
 			return this->start->data;
 		}
 		// Возвращает ссылку на первый элемент в контейнере списка . 
@@ -145,6 +121,7 @@ namespace ft{
   		void assign (InputIterator first, InputIterator last){
 			this->clear();
 			while(first != last){
+				this->size++;
 				this->push_back(first);
 				++first;
 			}
@@ -154,6 +131,7 @@ namespace ft{
 			size_type count;
 			while(count < n){
 				this->push_back(val);
+				this->size_list++;
 			}
 		}
 		// В версии заполнения (2) новое содержимое - это n элементов, каждый из которых инициализирован копией val .
@@ -171,6 +149,7 @@ namespace ft{
 				ptr->ptrNext = tmp;
 				tmp->ptrPrevie = ptr;
 				this->start = ptr;
+				this->size_list++;
 			}
 		}
 		// Вставляет новый элемент в начало списка, прямо перед его текущим первым элементом. Содержимое val копируется (или перемещается) во вставленный элемент. Это эффективно увеличивает размер контейнера на единицу.
@@ -182,6 +161,7 @@ namespace ft{
 					temp = temp->ptrPrevie;
 				}
 				delete temp;
+				this->size_list--;
 			}			
 		}
 		// Удаляет первый элемент в контейнере списка, эффективно уменьшая его размер на единицу. Это разрушает удаленный элемент.
@@ -197,6 +177,7 @@ namespace ft{
 				this->current = ptr;
 				this->current->ptrPrevie->ptrNext = this->current;
 			}
+			this->size_list++;
 		}
 		// Добавляет новый элемент в конец контейнера списка после его текущего последнего элемента. Содержимое val копируется (или перемещается) в новый элемент.
 		void pop_back(){
@@ -205,6 +186,7 @@ namespace ft{
 				temp->ptrNext = NULL;
 				delete this->current;
 				this->current = temp;
+				this->size_list--;				
 			}
 		}
 		// Удаляет последний элемент в контейнере списка, эффективно уменьшая размер контейнера на единицу. Это разрушает удаленный элемент
@@ -215,6 +197,7 @@ namespace ft{
 			temp->ptrPrevie = position.ptr->ptrPrevie;
 			temp->ptrPrevie->ptrNext = temp;
 			temp->ptrNext->ptrPrevie = temp;
+			this->size_list++;
 			return(iterator(temp));
 		}
 		void insert (iterator position, size_type n, const value_type& val){
@@ -223,6 +206,7 @@ namespace ft{
 			{
 				this->insert(position, val);
 				count++;
+				this->size_list++;
 			}
 			
 		}
@@ -231,6 +215,7 @@ namespace ft{
 			while (first != last){
 				insert(position, *first);
 				++first;
+				this->size_list++;
 			}
 		}
 		// Контейнер расширяется путем вставки новых элементов перед элементом в указанной позиции. 
@@ -241,6 +226,7 @@ namespace ft{
 			temp->ptrNext->ptrPrevie = temp->ptrPrevie;
 			position++;
 			delete temp;
+			this->size_list--;
 			return position;
 		}
 		iterator erase (iterator first, iterator last){
@@ -280,32 +266,84 @@ namespace ft{
 		
 		// Переносит элементы из x в контейнер, вставляя их в позицию. Это эффективно вставляет эти элементы в контейнер и удаляет их из x, изменяя размеры обоих контейнеров. Операция не предполагает строительства или разрушения какого-либо элемента. Они передаются независимо от того, является ли x значением lvalue или rvalue, или поддерживает ли value_type конструкцию перемещения или нет
 		void splice (iterator position, list& x){
+			int count = 0;
 			if (!x.empty()){
 				iterator start = x.begin();
-				iterator end = x.end();
+				iterator st = x.begin();
 				position.ptr->ptrPrevie->ptrNext = start.ptr;
-				position.ptr->ptrNext->ptrPrevie = end.ptr;
 				start.ptr->ptrPrevie = position.ptr->ptrPrevie;
-				end.ptr = position.ptr;
+				while (st.ptr->ptrNext != NULL){
+					++st;
+				}
+				st.ptr->ptrNext = position.ptr;
+				position.ptr->ptrPrevie = st.ptr;
 			}
 		}
 		// Первая версия (1) переносит все элементы x в контейнер
-		void splice (iterator position, list& x, iterator i);
+		void splice (iterator position, list& x, iterator i){
+
+		}
 		// Вторая версия (2) переносит в контейнер только элемент, на который указывает i из x.
 		void splice (iterator position, list& x, iterator first, iterator last);
 		// Третья версия (3) передает диапазон [первый, последний) из x в контейнер.
 
-		void remove (const value_type& val);
+		void remove (const value_type& val){
+			iterator start_it = this->begin();
+			iterator end_it = this->end();
+
+			while (start_it != end_it){
+				if (*begin == val) {
+					begin = this->erase(begin);
+				} else {
+					++begin;
+				}
+			}
+		}
 		// Удалить элементы с определенным значением Удаляет из контейнера все элементы, которые сравниваются с val. Это вызывает деструктор этих объектов и уменьшает размер контейнера на количество удаленных элементов
 		
 		template <class Predicate> // Унарный предикат, который, принимая значение того же типа, что и те, которые содержатся в объекте forward_list, возвращает true для тех значений, которые должны быть удалены из контейнера, и false для оставшихся. Это может быть указатель на функцию или объект функции.
-		void remove_if (Predicate pred);
+		void remove_if (Predicate pred){
+			iterator start_it = this->begin();
+			iterator end_it = this->end();
+
+			while (start_it != end_it){
+				if (pred(*begin)) {
+					begin = this->erase(begin);
+				} else {
+					++begin;
+				}
+			}			
+		}
 		//Удаляет из контейнера все элементы, для которых предикат предиката возвращает истину. Это вызывает деструктор этих объектов и уменьшает размер контейнера на количество удаленных элементов.
 		
-		void unique();
+		void unique(){
+			iterator start_it = this->begin();
+			iterator end_it = this->end();
+
+			++start_it;
+			while ( start_it != end_it){
+				if (*start_it == start_it.ptr->ptrPrevie){
+					begin = erase(begin);
+				} else {
+					++begin;
+				}
+			}
+		}
 		// Версия без параметров (1) удаляет все элементы, кроме первого, из каждой последующей группы одинаковых элементов в контейнере. Обратите внимание, что элемент удаляется из контейнера списка только в том случае, если он сравнивается с элементом, непосредственно предшествующим ему. Таким образом, эта функция особенно полезна для отсортированных списков.
 		template <class BinaryPredicate>
-		void unique (BinaryPredicate binary_pred);
+		void unique (BinaryPredicate binary_pred){
+			iterator start_it = this->begin();
+			iterator end_it = this->end();
+
+			++start_it;
+			while ( start_it != end_it){
+				if (binary_pred(*start_it, start_it.ptr->ptrPrevie)){
+					begin = erase(begin);
+				} else {
+					++begin;
+				}
+			}
+		}
 		// Вторая версия (2) принимает в качестве аргумента конкретную функцию сравнения, которая определяет «уникальность» элемента. Фактически, может быть реализовано любое поведение (и не только сравнение равенства), но обратите внимание, что функция вызовет binary_pred (* i, * (i-1)) для всех пар элементов (где i - итератор элемента , начиная со второго) и удалите i из списка, если предикат вернет истину.
 		void merge (list& x);
 		template <class Compare>
@@ -321,22 +359,69 @@ namespace ft{
 
 
 template <class T, class Alloc>
-  bool operator== (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator== (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs){
+	typename ft::list<T, Alloc>::const_iterator starLhs = lhs.begin();
+	typename ft::list<T, Alloc>::const_iterator endLhs = lhs.end();
+	typename ft::list<T, Alloc>::const_iterator startRhs = rhs.begin();
+	typename ft::list<T, Alloc>::const_iterator endRhs = rhs.end();
+
+	while ((starLhs != endLhs) && (startRhs != endRhs)){
+		if (*startRhs != *starLhs)
+			return (false);
+		++starLhs;
+		++startRhs;
+	}
+	if ((starLhs != endLhs) || (startRhs != endRhs)){
+		return (false);
+	}
+	return (true);
+  };
 
 template <class T, class Alloc>
-  bool operator!= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator!= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs){
+	  	if (lhs == rhs){
+			return (false);
+		}
+		return (true);
+};
 
 template <class T, class Alloc>
-  bool operator<  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator<  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs){
+  	typename ft::list<T, Alloc>::const_iterator first_1 = lhs.begin();
+	typename ft::list<T, Alloc>::const_iterator last_1 = lhs.end();
+	typename ft::list<T, Alloc>::const_iterator first_2 = rhs.begin();
+	typename ft::list<T, Alloc>::const_iterator last_2 = rhs.end();
+
+	while (first_1 != last_1)
+	{
+		if (first_2 == last_2 || *first_2 < *first_1)
+			return (false);
+		else if (*first_1 < *first_2)
+			return (true);
+		++first_1;
+		++first_2;
+	}
+	return (first_2 != last_2);		  
+  }
 
 template <class T, class Alloc>
-  bool operator<= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator<= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs){
+	  	return !(rhs < lhs);
+  }
 
 template <class T, class Alloc>
-  bool operator>  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator>  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs){
+	  	return (rhs < lhs);
+  }
 
 template <class T, class Alloc>
-  bool operator>= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs);
+  bool operator>= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs){
+	  return !(lhs < rhs);
+  }
 
 template <class T, class Alloc>
-void swap (ft::list<T,Alloc>& x, ft::list<T,Alloc>& y);
+void swap (ft::list<T,Alloc>& x, ft::list<T,Alloc>& y){
+	list<T,Alloc> temp = x;
+	x = y;
+	y = temp;
+}

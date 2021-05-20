@@ -92,8 +92,8 @@
 	// ++ai;
 	// std::cout << *ai << std::endl;
 // }
-#include <iostream>
-#include <list>
+// #include <iostream>
+// #include <list>
 
 int main ()
 {
@@ -136,3 +136,22 @@ int main ()
 
   return 0;
 }
+// int main ()
+// {
+
+//    ft::list<int> ptr;
+//    ptr.push_back(1);
+//    ptr.push_back(2);
+//    ptr.push_back(3);
+//    ptr.push_back(4);
+//    ft::list<int>::iterator it;
+//    ft::list<int>::iterator it1;
+//    it1 = ptr.begin();
+//    it = ptr.end();
+//    while (it1 != it)
+//    {
+//       std::cout << *it1 << std::endl;
+//       ++it1;
+//    }
+   
+// }

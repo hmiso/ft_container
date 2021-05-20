@@ -16,20 +16,32 @@ class ptr{
 
 int main ()
 {
-  std::list<ptr> mylist1, mylist2;
-  std::list<ptr>::iterator it;
-  ptr test
-  // set some initial values:
-  for (int i=1; i<=4; ++i)
-     mylist1.push_back(ptr());      // mylist1: 1 2 3 4
 
-  for (int i=1; i<=3; ++i)
-     mylist2.push_back(ptr());   // mylist2: 10 20 30
+   std::list<int> ptr;
+   ptr.push_back(1);
+   ptr.push_back(2);
+   ptr.push_back(3);
+   ptr.push_back(4);
+   std::list<int>::iterator it;
+   std::list<int>::iterator it1;
+   it = ptr.end();
+   it1 = ptr.begin();
 
-  it = mylist1.begin();
-  ++it;                         // points to 2
 
-  mylist1.splice (it, mylist2); // mylist1: 1 10 20 30 2 3 4
+//   std::list<ptr> mylist1, mylist2;
+//   std::list<ptr>::iterator it;
+//   ptr test
+//   // set some initial values:
+//   for (int i=1; i<=4; ++i)
+//      mylist1.push_back(ptr());      // mylist1: 1 2 3 4
+
+//   for (int i=1; i<=3; ++i)
+//      mylist2.push_back(ptr());   // mylist2: 10 20 30
+
+//   it = mylist1.begin();
+//   ++it;                         // points to 2
+
+//   mylist1.splice (it, mylist2); // mylist1: 1 10 20 30 2 3 4
                                 // mylist2 (empty)
                                 // "it" still points to 2 (the 5th element)
                                       
