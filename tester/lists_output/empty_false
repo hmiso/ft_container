@@ -1,0 +1,27 @@
+
+══════════════════════════════════════════════════════════════
+lists attributes : 
+STL : 
+Empty       : false
+Size        : 10
+Max size    : 384307168202282325
+Content     : [42, 42, 42, 42, 42, 42, 42, 42, 42, 42, ]
+
+FT : 
+Empty    [✔]: false
+Size     [✔]: 10
+Max size [✔]: 384307168202282325
+Content  [✔]: [42, 42, 42, 42, 42, 42, 42, 42, 42, 42, ]
+══════════════════════════════════════════════════════════════
+
+Bool result : 
+ - STL : false
+ - FT  : false
+
+Code executed:
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+ft::list<int> ft_default_list(10, 42);
+
+Compared with:
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+std::list<int> stl_default_list(10, 42);

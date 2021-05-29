@@ -8,6 +8,12 @@
 
 template <typename T>
 class ConstlistIterator;
+template <typename T>
+class listIterator;
+template <typename T>
+class RevlistIterator;
+template <typename T>
+class ConstRevlistIterator;
 // template <typename T>
 // class listIterator : public iterator<std::bidirectional_iterator_tag, T>
 // {
@@ -39,14 +45,14 @@ public:
         this->ptr = NULL;
     }
 
-    listIterator(node<T> *ptr){
-        this->ptr = ptr;
-    }
     listIterator(const listIterator &ptr){
         this->ptr = ptr.ptr;
     }
 	listIterator (const ConstlistIterator<T> &ptr){
         this->ptr = ptr.getNode();
+    }
+    listIterator (node<T> *ptr){
+        this->ptr = ptr;
     }
     ~listIterator(){}
 
@@ -54,17 +60,28 @@ public:
         this->ptr = ptr.ptr;
         return (*this);
     }
+    listIterator &operator = (node<T> *ptr){
+        this->ptr = ptr;
+        return (*this);
+    }    
     listIterator &operator = (const ConstlistIterator<T> &ptr){
         this->ptr = ptr.getNode();
         return (*this);
     }    
-    bool operator == (const node<T> *ptr){
-        if (this->ptr == ptr){
+    bool operator == (const listIterator &ptr){
+        if (this->ptr == ptr.ptr){
             return true;
         } else {
             return false;
         } // я правильно понимаю что сравнение идет по адресам а не значениям?
     }
+    bool operator == (const ConstlistIterator<T> &ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }    
     bool operator != (const node<T> *ptr){
         if (this->ptr != ptr){
             return true;
@@ -72,7 +89,14 @@ public:
             return false;
         } // я правильно понимаю что сравнение идет по адресам а не значениям?
     }
-    bool operator != (listIterator ptr){
+    bool operator != (const listIterator &ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (ConstlistIterator<T> ptr){
         if (this->ptr != ptr.ptr){
             return true;
         } else {
@@ -91,17 +115,17 @@ public:
     }
     listIterator operator++(int){
         listIterator tmp(*this);
-        tmp = tmp.ptr->ptrNext;
-        return tmp;
+         ++(*this);
+        return (tmp);
     }
     listIterator &operator--(){
         this->ptr = this->ptr->ptrPrevie;
         return *this;
     }
     listIterator operator--(int){
-        listIterator *tmp;
-        tmp = this->ptr->ptrPrevie;
-        return tmp;        
+        listIterator tmp(*this);
+        --(*this);
+        return (tmp); 
     }
 };
 
@@ -119,11 +143,11 @@ public:
         this->ptr = NULL;
     }
 
-    RevlistIterator(const node<T> *ptr){
+    RevlistIterator(node<T> *ptr){
         this->ptr = ptr;
     }
-	RevlistIterator(RevlistIterator const &ptr){
-		this = ptr;
+	RevlistIterator(const RevlistIterator &ptr){
+		this->ptr = ptr.ptr;
 	}
 
     ~RevlistIterator(){}
@@ -150,6 +174,34 @@ public:
             return false;
         } // я правильно понимаю что сравнение идет по адресам а не значениям?
     }
+    bool operator == (RevlistIterator ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (RevlistIterator ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator == (ConstRevlistIterator<T> ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (ConstRevlistIterator<T> ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }    
     reference    operator*() const{
         return this->ptr->data;
     }
@@ -183,7 +235,7 @@ class ConstlistIterator : public iterator<std::bidirectional_iterator_tag, T>
 	typedef const T&	reference;
 
 public:
-    const node<T> *ptr;
+    node<T> *ptr;
 
     ConstlistIterator(){
         this->ptr = NULL;
@@ -194,22 +246,20 @@ public:
     ConstlistIterator(node<T> *ptr){
         this->ptr = ptr;
     }
+    ConstlistIterator(ConstlistIterator &ptr){
+        this->ptr = ptr.ptr;
+    }
+    ConstlistIterator(listIterator<T> &ptr){
+        this->ptr = ptr.ptr;
+    }	
+    ~ConstlistIterator(){}
+
     ConstlistIterator(const ConstlistIterator &ptr){
         this->ptr = ptr.ptr;
     }
     ConstlistIterator(const listIterator<T> &ptr){
         this->ptr = ptr.ptr;
-    }	
-    ~ConstlistIterator(){}
-
-    ConstlistIterator &operator= (const ConstlistIterator &ptr){
-        this->ptr = ptr.ptr;
-        return (*this);
-    }
-    ConstlistIterator &operator= (const listIterator<T> &ptr){
-        this->ptr = ptr.ptr;
-        return (*this);
-    }    
+    } 
     bool operator == (const node<T> *ptr){
         if (this->ptr == ptr){
             return true;
@@ -224,6 +274,35 @@ public:
             return false;
         } // я правильно понимаю что сравнение идет по адресам а не значениям?
     }
+    bool operator == (ConstlistIterator ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (ConstlistIterator ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+
+    bool operator == (listIterator<T> ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (listIterator<T> ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }    
     reference    operator*() const{
         return this->ptr->data;
     }
@@ -236,19 +315,118 @@ public:
     }
     ConstlistIterator operator++(int){
         ConstlistIterator tmp(*this);
-        tmp = tmp.ptr->ptrNext;
-        return tmp;
+         ++(*this);
+        return (tmp);
     }
     ConstlistIterator &operator--(){
         this->ptr = this->ptr->ptrPrevie;
         return *this;
     }
     ConstlistIterator operator--(int){
-        ConstlistIterator *tmp;
-        tmp = this->ptr->ptrPrevie;
-        return tmp;        
+        ConstlistIterator tmp(*this);
+        --(*this);
+        return (tmp); 
     }
 };
 
 // сравнние констаннтых и обычных итераторов !!пше
 
+template <typename T>
+class ConstRevlistIterator : public iterator<std::bidirectional_iterator_tag, T>
+{
+	typedef	T*		pointer; // не смотря на то что я наследуюсь от базового итератора без них не компилируется
+	typedef T&		reference;
+private:
+    node<T> *ptr;
+
+public:
+
+    ConstRevlistIterator(){
+        this->ptr = NULL;
+    }
+
+    ConstRevlistIterator(const node<T> *ptr){
+        this->ptr = ptr;
+    }
+	ConstRevlistIterator(ConstRevlistIterator const &ptr){
+		this = ptr;
+	}
+
+    ~ConstRevlistIterator(){}
+
+    ConstRevlistIterator &operator = (const node<T> *ptr){
+        this->ptr->data = ptr->data;
+        this->ptr->ptrNext = ptr->ptrNext;
+        this->ptr->ptrPrevie = ptr->ptrPrevie;
+        return (*this);
+    }
+
+
+    bool operator == (const node<T> *ptr){
+        if (this->ptr == ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (const node<T> *ptr){
+        if (this->ptr != ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator == (ConstRevlistIterator ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (ConstRevlistIterator ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+
+    bool operator == (RevlistIterator<T> ptr){
+        if (this->ptr == ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }
+    bool operator != (RevlistIterator<T> ptr){
+        if (this->ptr != ptr.ptr){
+            return true;
+        } else {
+            return false;
+        } // я правильно понимаю что сравнение идет по адресам а не значениям?
+    }    
+    reference    operator*() const{
+        return this->ptr->data;
+    }
+    pointer operator -> () const {
+        return &(this->ptr->data);
+    }
+    ConstRevlistIterator &operator++(){
+        this->ptr = this->ptr->ptrPrevie;
+        return *this;
+    }
+    ConstRevlistIterator operator++(int){
+        ConstRevlistIterator *tmp;
+        tmp = this->ptr->ptrPrevie;
+        return tmp;
+    }
+    ConstRevlistIterator &operator--(){
+        this->ptr = this->ptr->ptrNext;
+        return *this;
+    }
+    ConstRevlistIterator operator--(int){
+        ConstRevlistIterator *tmp;
+        tmp = this->ptr->ptrNext;
+        return tmp;        
+    }
+};

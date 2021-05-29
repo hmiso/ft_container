@@ -20,7 +20,6 @@ class node{
             this->ptrPrevie = copy->ptrPrevie;
         };
         node(){
-            this->data = NULL;
             this->ptrNext = NULL;
             this->ptrPrevie = NULL;
         }

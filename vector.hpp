@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:11 by hmiso             #+#    #+#             */
-/*   Updated: 2021/05/06 11:14:02 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/05/29 13:23:38 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace ft{
 
-		template < class T, typename Alloc = allocator<T> >  class vector{
+		template < class T, typename Alloc = std::allocator<T> >  class vector{
 			typedef T 															value_type;
 			typedef Alloc														allocator_type;
 			typedef T&															reference;
