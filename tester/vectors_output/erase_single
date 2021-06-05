@@ -1,0 +1,31 @@
+
+══════════════════════════════════════════════════════════════
+Vectors attributes : 
+STL : 
+Empty       : false
+Size        : 4
+Max size    : 2305843009213693951
+Capacity    : 5
+Content     : [47, 152, 9, 14444]
+
+FT : 
+Empty    [✔]: false
+Size     [✔]: 4
+Max size [✔]: 2305843009213693951
+Capacity [✔]: 5
+Content  [✔]: [47, 152, 9, 14444]
+══════════════════════════════════════════════════════════════
+
+Code executed:
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+int range_array[] = {47, 152, -325, 9, 14444};
+ft::vector<int>::iterator ft_iterator_beg(&(range_array[0]));
+ft::vector<int> ft_erase(ft_iterator_beg, ft_iterator_beg + 5);
+ft_erase.erase(ft_erase.begin());
+
+Compared with:
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+int range_array[] = {47, 152, -325, 9, 14444};
+std::vector<int>::iterator stl_iterator_beg(&(range_array[0]));
+std::vector<int> stl_erase(stl_iterator_beg, stl_iterator_beg + 5);
+stl_erase.erase(stl_erase.begin());

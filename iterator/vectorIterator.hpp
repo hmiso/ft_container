@@ -9,13 +9,15 @@
 template <typename T>
 class vectorIterator : public iterator<std::random_access_iterator_tag, T>
 {
-
+	typedef	T*		pointer;
+	typedef T&		reference;
 public:
 		T *ptr;
+		vectorIterator base() { return (this); }
         vectorIterator() {
 			this->ptr = NULL;
 		}
-		vectorIterator(const T* ptr) {
+		vectorIterator(const pointer ptr) {
 			this->ptr = ptr;
 		}
 		vectorIterator(const vectorIterator &ptr) {
@@ -25,16 +27,17 @@ public:
 
 		vectorIterator &operator = (const vectorIterator &ptr){
 			this->ptr = ptr.ptr;
+			return (*this);
 		}
 		bool operator == (const vectorIterator &ptr){
-			if (*this == ptr){
+			if (this->ptr == ptr.ptr){
 				return true;
 			} else {
 				return false;
 			}
 		}
 		bool operator != (const vectorIterator &ptr){
-			if (*this != ptr){
+			if (this->ptr != ptr.ptr){
 				return true;
 			} else {
 				return false;
@@ -51,7 +54,7 @@ public:
 			return *this;
 		}
 		vectorIterator operator++(int){
-			vectorIterator *tmp;
+			vectorIterator tmp;
 			tmp = *this;
 			this->ptr++;
 			return tmp;
@@ -61,7 +64,7 @@ public:
 			return *this;
 		}
 		vectorIterator operator--(int){
-			vectorIterator *tmp;
+			vectorIterator tmp;
 			tmp = *this;
 			this->ptr--;
 			return tmp;
@@ -69,14 +72,18 @@ public:
 		size_t	operator-(vectorIterator ptr) const{
 			return this->ptr - ptr.ptr;
 		}
-		vectorIterator &operator-(size_t n) const{
-			return this->ptr - n;
+		vectorIterator operator-(size_t n) const{
+			vectorIterator tmp = *this;
+			tmp.ptr -= n;
+			return(tmp);
 		}
-		vectorIterator &operator+(size_t n) const{
-			return this->ptr + n;
+		vectorIterator operator+(size_t n) const{
+			vectorIterator tmp = *this;
+			tmp.ptr += n;
+			return(tmp);
 		}
 		bool operator > (const vectorIterator &ptr){
-			return ptr < *this
+			return ptr < *this;
 		}
 		bool operator < (const vectorIterator &ptr){
 			return !bool(*this) && bool(ptr);
@@ -100,13 +107,19 @@ public:
 template <typename T>
 class RevvectorIterator : public iterator<std::random_access_iterator_tag, T>
 {
-
+	typedef	T*		pointer;
+	typedef T&		reference;
 public:
 		T *ptr;
+		pointer base() { 				
+			pointer ptr = this->ptr;
+			ptr++;
+			return(ptr);
+		}
         RevvectorIterator() {
 			this->ptr = NULL;
 		}
-		RevvectorIterator(const T* ptr) {
+		RevvectorIterator(const pointer ptr) {
 			this->ptr = ptr;
 		}
 		RevvectorIterator(const RevvectorIterator &ptr) {
@@ -116,6 +129,7 @@ public:
 
 		RevvectorIterator &operator = (const RevvectorIterator &ptr){
 			this->ptr = ptr.ptr;
+			return (*this);
 		}
 		bool operator == (const RevvectorIterator &ptr){
 			if (*this == ptr){
@@ -142,7 +156,7 @@ public:
 			return *this;
 		}
 		RevvectorIterator operator++(int){
-			vectorIterator *tmp;
+			RevvectorIterator *tmp;
 			tmp = *this;
 			this->ptr--;
 			return tmp;
@@ -152,7 +166,7 @@ public:
 			return *this;
 		}
 		RevvectorIterator operator--(int){
-			vectorIterator *tmp;
+			RevvectorIterator *tmp;
 			tmp = *this;
 			this->ptr++;
 			return tmp;
@@ -160,29 +174,31 @@ public:
 		size_t	operator-(RevvectorIterator ptr) const{
 			return this->ptr - ptr.ptr;
 		}
-		RevvectorIterator &operator-(size_t n) const{
-			return this->ptr + n;
+		RevvectorIterator operator-(size_t n) const{
+			RevvectorIterator tmp = *this;
+			tmp.ptr += n;
+			return(tmp);
 		}
-		vectorIterator &operator+(size_t n) const{
+		RevvectorIterator &operator+(size_t n) const{
 			return this->ptr - n;
 		}
-		bool operator > (const vectorIterator &ptr){
-			return ptr < *this
+		bool operator > (const RevvectorIterator &ptr){
+			return ptr < *this;
 		}
-		bool operator < (const vectorIterator &ptr){
+		bool operator < (const RevvectorIterator &ptr){
 			return !bool(*this) && bool(ptr);
 		} // вообще не понимаю 
-		bool operator <= (const vectorIterator &ptr){
+		bool operator <= (const RevvectorIterator &ptr){
 			return !(ptr < *this);
 		} // вообще не понимаю 
-		bool operator >= (const vectorIterator &ptr){
+		bool operator >= (const RevvectorIterator &ptr){
 			return !(*this < ptr);
 		} // вообще не понимаю 
-		vectorIterator &operator+=(size_t n){
+		RevvectorIterator &operator+=(size_t n){
 			this->ptr -= n;
 			return (*this);
 		}
-		vectorIterator &operator-=(size_t n){
+		RevvectorIterator &operator-=(size_t n){
 			this->ptr += n;
 			return (*this);
 		}

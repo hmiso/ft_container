@@ -1,0 +1,27 @@
+
+══════════════════════════════════════════════════════════════
+Vectors attributes : 
+STL : 
+Empty       : false
+Size        : 8
+Max size    : 2305843009213693951
+Capacity    : 14
+Content     : [0, 0, 0, 0, 0, 0, 0, 42]
+
+FT : 
+Empty    [✔]: false
+Size     [✔]: 8
+Max size [✔]: 2305843009213693951
+Capacity [✔]: 14
+Content  [✔]: [0, 0, 0, 0, 0, 0, 0, 42]
+══════════════════════════════════════════════════════════════
+
+Code executed:
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+ft::vector<int> ft_pushback(7);
+ft_pushback.push_back(42);
+
+Compared with:
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+std::vector<int> stl_pushback(7);
+stl_pushback.push_back(42);

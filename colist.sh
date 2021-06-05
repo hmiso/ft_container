@@ -1,1 +1,1 @@
-clang++ -g -fsanitize=address Allocator.hpp list.hpp iterator/iterator.hpp iterator/listIterator.hpp  iterator/node.hpp test_list.cpp test.cpp main.cpp
+clang++  -g Allocator.hpp vector.hpp iterator/iterator.hpp iterator/vectorIterator.hpp main.cpp test_vector.cpp test.cpp
