@@ -1,1 +1,1 @@
-clang++  -g Allocator.hpp vector.hpp iterator/iterator.hpp iterator/vectorIterator.hpp main.cpp test_vector.cpp test.cpp
+clang++ -g main.cpp 

@@ -41,10 +41,10 @@ static bool printSingleValue(std::fstream& fs, const T& t1, const T& t2)
 bool printBoolResult(std::fstream& fs, bool stl_bool, bool ft_bool);
 
 void test_vector();
-// void test_list();
-// void test_map();
-// void test_stack();
-// void test_queue();
+void test_list();
+void test_map();
+void test_stack();
+void test_queue();
 // void test_deque();
 
 #endif
