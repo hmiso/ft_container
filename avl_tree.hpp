@@ -10,6 +10,7 @@ class map_node
 	std::pair<Key, T> pair;
 	int height;
 	int flag_empty;
+	bool end;
 	map_node* left;
 	map_node* right;
 	map_node* parrent;
@@ -22,6 +23,14 @@ class map_node
 		this->pair.first = k;
 		this->pair.second = val;
 	}
+	map_node(const map_node &ptr){
+		this->height =  ptr.height;
+		this->left = ptr.left;
+		this->right = ptr.right;
+		this->parrent = ptr.parrent;
+		this->pair.first = ptr.pair.first;
+		this->pair.second = ptr.pair.second;
+	}	
 	map_node(map_node *prev, Key k, T val){
 		this->height = 1;
 		this->left = NULL;
@@ -55,18 +64,26 @@ class avl_tree{
 	typedef std::pair<const Key, T>				value_type;
 
 	map_node<Key, T> *root;
-	map_node<Key, T> *end;
+
+	avl_tree &operator=(const avl_tree &ptr){
+		this->root = ptr.root;
+	}
 
 	avl_tree(){
 		this->root = new map_node<Key, T>;
-		this->end = new map_node<Key, T>;
+	}
+	avl_tree(const avl_tree &ptr){
+		this->root = ptr.root;
 	}
 	unsigned char height(map_node<Key, T>* p)
 	{
+		if (p && p->end == true){
+			return 0;
+		}
 		return p?p->height:0;
 	}
-		map_node<Key, T> findmin(map_node<Key, T> p) const	{ return (p->_left?findmin(p->_left):p); }
-		map_node<Key, T> findmax(map_node<Key, T> p) const	{ return (p->_right?findmax(p->_right):p); }
+	map_node<Key, T> *findmin(map_node<Key, T> *p) const	{ return (p->left?findmin(p->left):p); }
+	map_node<Key, T> *findmax(map_node<Key, T> *p) const	{ return (p->right?findmax(p->right):p); }
 	int bfactor(map_node<Key, T>* p)
 	{
 		return height(p->right)-height(p->left);
@@ -74,9 +91,17 @@ class avl_tree{
 
 	void fixheight(map_node<Key, T>* p)
 	{
-		unsigned char hl = height(p->left);
-		unsigned char hr = height(p->right);
+		int hl = height(p->left);
+		int hr = height(p->right);
 		p->height = (hl>hr?hl:hr)+1;
+	}
+	map_node<Key, T>* get_end(){
+		map_node<Key, T>* temp;
+		temp = this->root;
+		while(temp->right){
+			temp = temp->right;
+		}
+		return temp;
 	}
 	map_node<Key, T>* balance(map_node<Key, T>* p) // балансировка узла p
 	{
@@ -115,7 +140,7 @@ class avl_tree{
 		return p;
 	}	
 	map_node<Key, T> *insert(map_node<Key, T> *ptr, map_node<Key, T> *parrent, Key k, T val){
-		if (!ptr) {
+		if (!ptr || ptr->end == true) {
 			map_node<Key, T> *temp = new map_node<Key, T>;
 			temp->parrent = parrent;
 			temp->height = 1;
@@ -132,15 +157,25 @@ class avl_tree{
 		}
 		return balance(ptr);
 	}
-	void insert(Key k, T val){
+	map_node<Key, T> * insert(Key k, T val){
 		if (this->root->flag_empty == 0){
 			this->root->flag_empty = 1;
 			this->root->pair.first = k;
 			this->root->pair.second = val;
-			return ;
+			return this->root;
 		}
-		insert(this->root, this->root, k, val);
+		return insert(this->root, this->root, k, val);
 	}
+	map_node<Key, T> * insert(const std::pair<Key, T> val){
+		if (this->root->flag_empty == 0){
+			this->root->flag_empty = 1;
+			this->root->pair.first = val.first;
+			this->root->pair.second = val.second;
+			return this->root;
+		}
+		return insert(this->root, this->root, val.first, val.second);
+
+	}	
 	T find(Key k){
 		map_node<Key, T> *temp = this->root;
 		while (temp && temp->pair.first != k)

@@ -73,7 +73,19 @@ namespace ft{
 
 		mapped_type& operator[] (const key_type& k);
 
-		std::pair<iterator,bool> insert (const value_type& val);
+		std::pair<iterator,bool> insert (const value_type& val){
+			iterator it = begin();
+			// while(){
+			// 	if (it->ptr->pair.first == val.first){
+			// 		return std::pair(iterator, bool)(it, 0);
+			// 		++it;
+			// 	}
+			// }
+			this->start.root = this->start.insert(val);
+			this->count_map++;
+			return(std::pair<iterator, bool>(it, 1));
+
+		}
 
 		iterator insert (iterator position, const value_type& val);
 

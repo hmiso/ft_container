@@ -15,7 +15,16 @@ class Mapiterator
 	Mapiterator(map_node<Key, T> *ptr){
 		this->ptr = ptr;
 	}
-
+	Mapiterator(){
+		this->ptr = NULL;
+	}
+	Mapiterator& operator=(const Mapiterator &ptr){
+		this->ptr = ptr.ptr;
+		return (*this);
+	}
+	std::pair<Key, T> *operator->(){
+		return (&ptr->pair);
+	}
 	Mapiterator &operator++(){
 	if (this->ptr->right)
 		this->ptr = func.findmin(this->ptr->right);

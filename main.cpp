@@ -20,24 +20,15 @@ int main()
     // test_map();
     // std::cout << "\n";
 
-    std::map<int, int> f;
+    ft::map<int, int> f;
+    ft::map<int, int>::iterator it;
 
-    f[0] = 1;
-    f[1] = 2;
-    f[2] = 3;
-    f[3] = 4;
+    f.insert(std::pair<int, int>(0, 1));
+    f.insert(std::pair<int, int>(1, 2));
+    f.insert(std::pair<int, int>(2, 3));
 
-
-    std::map<int, int>::iterator q;
-    std::map<int, int>::iterator w;
-
-    q = f.begin();
-    w = f.end();
-
-    std::cout << q->first << std::endl;
-    ++q;
-    std::cout << q->first << std::endl;
-    ++q;
-    std::cout << q->first << std::endl;
-        
+    it = f.begin();
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
 }
