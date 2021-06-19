@@ -22,13 +22,34 @@ int main()
 
     ft::map<int, int> f;
     ft::map<int, int>::iterator it;
+    ft::map<int, int>::iterator it2;
 
-    f.insert(std::pair<int, int>(0, 1));
-    f.insert(std::pair<int, int>(1, 2));
-    f.insert(std::pair<int, int>(2, 3));
-
+    f.insert(std::pair<int, int>(1, 1));
+    f.insert(std::pair<int, int>(2, 2));
+    f.insert(std::pair<int, int>(3, 3));
+    f.insert(std::pair<int, int>(5, 5));
+    f.insert(std::pair<int, int>(4, 4));
+    f.insert(std::pair<int, int>(7, 7));
+    f.insert(std::pair<int, int>(-1, -1));
+    f.insert(std::pair<int, int>(10, 10));
+    f.insert(std::pair<int, int>(-5, -5));    
     it = f.begin();
+    it2 = f.end();
     std::cout << it->second << std::endl;
     ++it;
     std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;
+    ++it;
+    std::cout << it->second << std::endl;                            
 }

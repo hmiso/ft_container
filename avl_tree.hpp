@@ -8,7 +8,7 @@ class map_node
 	public:
 
 	std::pair<Key, T> pair;
-	int height;
+	unsigned char height;
 	int flag_empty;
 	bool end;
 	map_node* left;
@@ -31,16 +31,7 @@ class map_node
 		this->pair.first = ptr.pair.first;
 		this->pair.second = ptr.pair.second;
 	}	
-	map_node(map_node *prev, Key k, T val){
-		this->height = 1;
-		this->left = NULL;
-		this->right = NULL;
-		this->parrent = NULL;
-		this->pair.first = k;
-		this->pair.second = val;
-		this->parrent = prev;
-		this->flag_empty = 1;
-	}	
+
 	map_node(){
 		this->height = 1;
 		this->left = NULL;
@@ -64,13 +55,47 @@ class avl_tree{
 	typedef std::pair<const Key, T>				value_type;
 
 	map_node<Key, T> *root;
+	map_node<Key, T> *end;
 
 	avl_tree &operator=(const avl_tree &ptr){
 		this->root = ptr.root;
 	}
+	void delete_end(map_node<Key, T> *p) {
+		if (!p){
+			return ;
+		}
+		if (p->right)
+			delete_end(p->right);
+		else {
+			p->parrent->right = 0;
+		}
+	}
+
+	void delete_end() {
+		map_node<Key, T> *temp = this->root;
+		while(temp->right->end != true){
+			temp = temp->right;
+		}
+		temp->right = NULL;
+		this->end->parrent = NULL;
+	}
+
+	void set_end(){
+		map_node<Key, T> *temp = this->root;
+		while(temp->right != NULL){
+			temp = temp->right;
+		}
+		temp->right = this->end;
+		this->end->parrent = temp;
+	}
 
 	avl_tree(){
 		this->root = new map_node<Key, T>;
+		this->end = new map_node<Key, T>;
+		this->root->right = end;
+		this->end->end = true;
+		this->end->height = 0;
+		this->end->parrent = this->root;
 	}
 	avl_tree(const avl_tree &ptr){
 		this->root = ptr.root;
@@ -96,12 +121,7 @@ class avl_tree{
 		p->height = (hl>hr?hl:hr)+1;
 	}
 	map_node<Key, T>* get_end(){
-		map_node<Key, T>* temp;
-		temp = this->root;
-		while(temp->right){
-			temp = temp->right;
-		}
-		return temp;
+		return this end;
 	}
 	map_node<Key, T>* balance(map_node<Key, T>* p) // балансировка узла p
 	{
@@ -124,23 +144,36 @@ class avl_tree{
 	{
 		map_node<Key, T>* q = p->left;
 		p->left = q->right;
+		if (p->left){
+			p->left->parrent = p;
+		}
 		q->right = p;
+		q->parrent = p->parrent;
+		p->parrent = q;
 		fixheight(p);
 		fixheight(q);
 		return q;
 	}
 
-	map_node<Key, T>* rotateleft(map_node<Key, T>* q) // левый поворот вокруг q
+	map_node<Key, T>* rotateleft(map_node<Key, T>* p) // левый поворот вокруг q
 	{
-		map_node<Key, T>* p = q->right;
-		q->right = p->left;
-		p->left = q;
-		fixheight(q);
+		map_node<Key, T>* q = p->right;
+		p->right = q->left;
+		if (p->right){
+			p->right->parrent = p;
+		}
+		q->left = p;
+		q->parrent = p->parrent;
+		p->parrent = q;
 		fixheight(p);
-		return p;
+		fixheight(q);
+		return q;
 	}	
 	map_node<Key, T> *insert(map_node<Key, T> *ptr, map_node<Key, T> *parrent, Key k, T val){
-		if (!ptr || ptr->end == true) {
+		if (this->end->parrent){
+			this->delete_end();
+		}
+		if (!ptr) {
 			map_node<Key, T> *temp = new map_node<Key, T>;
 			temp->parrent = parrent;
 			temp->height = 1;
@@ -148,6 +181,7 @@ class avl_tree{
 			temp->pair.second = val;
 			temp->right = NULL;
 			temp->left = NULL;
+			temp->flag_empty = 1;
 			return temp;
 		}
 		if (k < ptr->pair.first) {
@@ -155,6 +189,8 @@ class avl_tree{
 		} else {
 			ptr->right = insert(ptr->right, ptr, k, val);
 		}
+		if (!this->end->parrent)
+			this->set_end();		
 		return balance(ptr);
 	}
 	map_node<Key, T> * insert(Key k, T val){

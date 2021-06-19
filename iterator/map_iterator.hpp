@@ -7,38 +7,34 @@ template <class Key, class T>
 class Mapiterator
 {
 	private:
-	map_node<Key, T> *ptr;
 
 	avl_tree<Key, T> func;
 	public:
 
 	Mapiterator(map_node<Key, T> *ptr){
-		this->ptr = ptr;
+		this->func.root = ptr;
 	}
 	Mapiterator(){
-		this->ptr = NULL;
+		this->func.root = NULL;
 	}
 	Mapiterator& operator=(const Mapiterator &ptr){
-		this->ptr = ptr.ptr;
+		this->func.root = ptr.func.root;
 		return (*this);
 	}
 	std::pair<Key, T> *operator->(){
-		return (&ptr->pair);
+		return (&this->func.root->pair);
 	}
 	Mapiterator &operator++(){
-	if (this->ptr->right)
-		this->ptr = func.findmin(this->ptr->right);
-	else if (this->ptr != func.get_end())
-	{
-		while (this->ptr->parrent && this->ptr->parrent->right == this->ptr)
-			this->ptr = this->ptr->parrent;
-		this->ptr = this->ptr->parrent;
-		if (this->ptr == NULL)
-			this->ptr = func.get_end();
+	if (this->func.root->right)
+		this->func.root = func.findmin(this->func.root->right);
+	else {
+		while (this->func.root->parrent && this->func.root->parrent->right == this->func.root){
+			this->func.root = this->func.root->parrent;
+		}
+		this->func.root = this->func.root->parrent;
 	}
-	else
-		this->ptr->left->parrent = NULL;
 	return (*this);
+
 	}
 };
 

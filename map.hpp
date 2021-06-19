@@ -57,7 +57,9 @@ namespace ft{
 
 		const_iterator begin() const;
 
-		iterator end();
+		iterator end(){
+			return (this->start.get_end());
+		}
 
 		const_iterator end() const;
 
