@@ -49,16 +49,19 @@ class map_node
 	}
 };
 
-template <class Key, class T>
+template <class Key, class T, class Compare>
 class avl_tree{
 	public:
 	typedef std::pair<const Key, T>				value_type;
 
+
 	map_node<Key, T> *root;
 	map_node<Key, T> *end;
-
+	Compare comp;
 	avl_tree &operator=(const avl_tree &ptr){
 		this->root = ptr.root;
+		this->end = ptr.end;
+		return (*this);
 	}
 	void delete_end(map_node<Key, T> *p) {
 		if (!p){
@@ -114,6 +117,110 @@ class avl_tree{
 		return height(p->right)-height(p->left);
 	}
 
+	map_node<Key, T> * remove(map_node<Key, T> *p, T k)
+	{
+		if (!p)
+			return 0;
+		if (k < p->pair.first)
+			p->left = remove(p->left, k);
+		else if(k > p->pair.first)
+			p->right = remove(p->right,k);	
+		else
+		{
+			map_node<Key, T>  *q = p->left;
+			map_node<Key, T>  *r = p->right;
+			map_node<Key, T>  *parents = p->parrent;
+			delete &p;
+			p = NULL;
+			if (q)
+			{
+				map_node<Key, T>  *max = findmax(q);
+				max->left = removemax(q);
+				max->right = r;
+				if (max->right)
+					max->right->parrent = max;
+				if (max->left)
+					max->left->parrent = max;
+				max->parrent = parents;
+				return (balance(max));
+			}
+			else if (r)
+			{
+				map_node<Key, T>  *min = findmin(r);
+				min->right = removemin(r);
+				min->left = q;
+				if (min->left)
+					min->left->parrent = min;
+				if (min->right)
+					min->right->parrent = min;
+				min->parrent = parents;
+				return (balance(min));
+			}
+		}
+		return p;
+	}
+	void remove(T k)
+	{
+		if (!root)
+			return ;
+		delete_end();
+		if(comp(k.first, root->key.first))
+			root->left = remove(root->left,k);
+		else if( !comp(k.first, root->key.first))
+			root->right = remove(root->right,k);	
+		else
+		{
+			map_node<Key, T> *q = root->left;
+			map_node<Key, T> *r = root->right;
+			map_node<Key, T> *parents = root->parrent;
+			delete &root;
+			root = NULL;
+			if (q)
+			{
+				map_node<Key, T> *max = findmax(q);
+				max->left = removemax(q);
+				max->right = r;
+				if (max->right)
+					max->right->parrent = max;
+				if (max->left)
+					max->left->parrent = max;
+				max->parrent = parents;
+				root = balance(max);
+				set_end();
+				return ;
+			}
+			else if (r)
+			{
+				map_node<Key, T> *min = findmin(r);
+				min->right = removemin(r);
+				min->left = q;
+				if (min->left)
+					min->left->parrent = min;
+				if (min->right)
+					min->right->parrent = min;
+				min->parrent = parents;
+				root = balance(min);
+				set_end();
+				return ;
+			}
+		}
+		set_end();
+	}
+	map_node<Key, T>* removemin(map_node<Key, T> *p)
+	{
+		if (p->left == 0)
+			return p->right;
+		p->left = removemin(p->left);
+		return balance(p);
+	}
+
+	map_node<Key, T>* removemax(map_node<Key, T> *p)
+	{
+		if (!p->right)
+			return p->left;
+		p->right = removemax(p->right);
+		return (balance(p));
+	}
 	void fixheight(map_node<Key, T>* p)
 	{
 		int hl = height(p->left);
@@ -121,7 +228,7 @@ class avl_tree{
 		p->height = (hl>hr?hl:hr)+1;
 	}
 	map_node<Key, T>* get_end(){
-		return this end;
+		return this->end;
 	}
 	map_node<Key, T>* balance(map_node<Key, T>* p) // балансировка узла p
 	{
@@ -202,6 +309,24 @@ class avl_tree{
 		}
 		return insert(this->root, this->root, k, val);
 	}
+	void insert(map_node<Key, T> *elem, std::pair<Key, T> val)
+	{
+		delete_end();
+		if( !elem ) {
+			elem = new map_node<Key, T>;
+			elem->pair.first = val.first;
+			elem->pair.second = val.second;
+			set_end();
+			return ;
+		}
+		if(comp(val.first, root->pair.first))
+			elem->left = insert(elem, elem->left, val.first, val.second);
+		else
+			elem->right = insert(elem, elem->right, val.first, val.second);
+		elem = balance(elem);
+		set_end();
+	}
+
 	map_node<Key, T> * insert(const std::pair<Key, T> val){
 		if (this->root->flag_empty == 0){
 			this->root->flag_empty = 1;
