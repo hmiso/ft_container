@@ -75,6 +75,12 @@ class avl_tree{
 	}
 
 	void delete_end() {
+		if (!root)
+			return ;
+		if (!root->left && !root->right) {
+			root = NULL;
+			return ;
+		}				
 		map_node<Key, T> *temp = this->root;
 		while(temp->right->end != true){
 			temp = temp->right;
@@ -117,20 +123,20 @@ class avl_tree{
 		return height(p->right)-height(p->left);
 	}
 
-	map_node<Key, T> * remove(map_node<Key, T> *p, T k)
+	map_node<Key, T> * remove(map_node<Key, T> *p, std::pair<Key, T> k)
 	{
 		if (!p)
 			return 0;
-		if (k < p->pair.first)
+		if (k.first < p->pair.first)
 			p->left = remove(p->left, k);
-		else if(k > p->pair.first)
+		else if(k.first > p->pair.first)
 			p->right = remove(p->right,k);	
 		else
 		{
 			map_node<Key, T>  *q = p->left;
 			map_node<Key, T>  *r = p->right;
 			map_node<Key, T>  *parents = p->parrent;
-			delete &p;
+			delete p;
 			p = NULL;
 			if (q)
 			{
@@ -159,14 +165,14 @@ class avl_tree{
 		}
 		return p;
 	}
-	void remove(T k)
+	void remove(std::pair<Key, T> k)
 	{
 		if (!root)
 			return ;
 		delete_end();
-		if(comp(k.first, root->key.first))
+		if(comp(k.first, root->pair.first))
 			root->left = remove(root->left,k);
-		else if( !comp(k.first, root->key.first))
+		else if( !comp(k.first, root->pair.first))
 			root->right = remove(root->right,k);	
 		else
 		{

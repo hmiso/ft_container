@@ -93,6 +93,9 @@ struct pair_comp
 		}
 
 		iterator end(){
+			if (this->start.root->right->end == true){
+				return this->start.root;
+			}
 			return (this->start.end);
 		}
 
@@ -194,7 +197,7 @@ struct pair_comp
 			}
 		}
 		void erase (iterator position){
-			start.remove(position.func.root, position.func.root->pair.second);
+			start.remove(position.func.root,*position);
 			--this->count_map;
 		}
 

@@ -155,6 +155,8 @@ void test_ft_clear()
     mapa.insert(std::pair<int, int>(1, 2));
     mapa.insert(std::pair<int, int>(2, 3));
     mapa.insert(std::pair<int, int>(3, 4));
+    mapa.insert(std::pair<int, int>(4, 5));    
+    mapa.insert(std::pair<int, int>(5, 6));    
     std::cout << "before clear:" << " ";
     print_map(mapa);
     std::cout << "mapa SIZE(): " << mapa.size() << std::endl;
@@ -167,11 +169,13 @@ void test_ft_clear()
 
 void test_std_clear()
 {
-    std::cout << "* FT CLEAR *" << std::endl;
+    std::cout << "* STD CLEAR *" << std::endl;
     std::map<int, int> mapa;
     mapa.insert(std::pair<int, int>(1, 2));
     mapa.insert(std::pair<int, int>(2, 3));
     mapa.insert(std::pair<int, int>(3, 4));
+    mapa.insert(std::pair<int, int>(4, 5));
+    mapa.insert(std::pair<int, int>(5, 6));
     std::cout << "before clear:" << " ";
     print_map(mapa);
     std::cout << "mapa SIZE(): " << mapa.size() << std::endl;
