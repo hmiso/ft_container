@@ -359,4 +359,14 @@ class avl_tree{
 			return 0;
 		}
 	}
+	map_node<Key, T>						*deletes(map_node<Key, T> *_head)
+	{
+			if (_head == NULL)
+				return (_head);
+			_head->left = deletes (_head->left); 
+			_head->right = deletes (_head->right);
+			delete _head;
+			_head = NULL;
+			return (_head);
+	}
 };

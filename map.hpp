@@ -71,7 +71,10 @@ struct pair_comp
 			
 		}
 		
-		~map(){}
+		~map(){
+			if (this->start.root)
+				this->start.deletes(this->start.root);
+		}
 
 		map &operator=(const map<Key, T> &other){
 			this->count_map = other.count_map;
@@ -171,7 +174,7 @@ struct pair_comp
 		void insert (iterator first, iterator last){
 			while (first != last){
 				this->count_map++;
-				this->start.insert(*first);
+				this->start.root = this->start.insert(*first);
 				++first;
 			}
 		}
@@ -197,16 +200,16 @@ struct pair_comp
 			}
 		}
 		void erase (iterator position){
-			start.remove(position.func.root,*position);
+			start.remove(*position);
 			--this->count_map;
 		}
 
 		void swap (map& x){
-				avl_tree<Key, T, Compare>	tmp = x.start;
+				avl_tree<Key, T, Compare> tmp = x.start;
 				x.start = this->start;
 				size_t count_tmp = x.count_map;
 				x.count_map = this->count_map;
-				this->start = x.start;
+				this->start = tmp;
 				this->count_map = count_tmp;
 		}
 

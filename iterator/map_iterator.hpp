@@ -79,6 +79,9 @@ class Mapiterator
 	bool operator <(const Mapiterator &ptr){
 		return this->func.root < ptr.func.root;
 	}
+	~Mapiterator(){
+
+	}
 };
 
 template <class Key, class T, class Comp>
