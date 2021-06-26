@@ -163,8 +163,8 @@ struct pair_comp
 
 		iterator insert (iterator position, const value_type& val){
 			iterator next = position--;
-			if (position.func.root && position->first < val.first && next->first > val.first){
-				this->start.insert(position.func.root, val);
+			if (position.func && position->first < val.first && next->first > val.first){
+				this->start.insert(position.func, val);
 				return ++position;
 			} else {
 				return insert(val).first;

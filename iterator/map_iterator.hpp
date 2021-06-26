@@ -8,20 +8,26 @@ class Mapiterator
 {
 	public:
 
-	avl_tree<Key, T, Comp> func;
+	map_node<Key, T> *func;
 
+	map_node<Key, T> * findmin(map_node<Key, T> * p) const {
+	return p->left ? findmin(p->left) : p;
+	}
+	map_node<Key, T> * findmax(map_node<Key, T> *p) const { 
+	return p->right ? findmax(p->right) : p; 
+	}
 
 	Mapiterator(map_node<Key, T> *ptr){
-		this->func.root = ptr;
+		this->func = ptr;
 	}
 	Mapiterator(avl_tree<Key, T, Comp> *ptr){
-		this->func = ptr;
+		this->func = ptr->root;
 	}	
 	Mapiterator(const Mapiterator &copy){
 		this->func = copy.func;
 	}		
 	Mapiterator(){
-		this->func.root = NULL;
+		this->func = NULL;
 	}
 
 	Mapiterator& operator=(const Mapiterator &ptr){
@@ -29,30 +35,30 @@ class Mapiterator
 		return (*this);
 	}
 	std::pair<Key, T> *operator->(){
-		return (&this->func.root->pair);
+		return (&this->func->pair);
 	}
 	std::pair<Key, T> &operator*() const {
-		return this->func.root->pair;
+		return this->func->pair;
 	}
 	Mapiterator &operator++(){
-	if (this->func.root->right)
-		this->func.root = func.findmin(this->func.root->right);
+	if (this->func->right)
+		this->func = this->findmin(this->func->right);
 	else {
-			while (this->func.root->parrent && this->func.root->parrent->right == this->func.root){
-				this->func.root = this->func.root->parrent;
+			while (this->func->parrent && this->func->parrent->right == this->func){
+				this->func = this->func->parrent;
 			}
-			this->func.root = this->func.root->parrent;
+			this->func = this->func->parrent;
 		}
 		return (*this);
 	}
 	Mapiterator &operator--(){
-	if (this->func.root->left)
-		this->func.root = func.findmax(this->func.root->left);
+	if (this->func->left)
+		this->func = this->findmax(this->func->left);
 	else {
-			while (this->func.root->parrent && this->func.root->parrent->left == this->func.root){
-				this->func.root = this->func.root->parrent;
+			while (this->func->parrent && this->func->parrent->left == this->func){
+				this->func = this->func->parrent;
 			}
-			this->func.root = this->func.root->parrent;
+			this->func = this->func->parrent;
 		}
 		return (*this);
 	}
@@ -67,17 +73,17 @@ class Mapiterator
 		return temp;
 	}
 
-	bool operator==(const Mapiterator &ptr){
-		return this->func.root == ptr.func.root;
+	friend bool operator==(const Mapiterator &ptr, const Mapiterator &ptr1){
+		return ptr.func == ptr1.func;
 	}
-	bool operator !=(const Mapiterator &ptr){
-		return this->func.root != ptr.func.root;
+	friend bool operator !=(const Mapiterator &ptr, const Mapiterator &ptr1){
+		return ptr.func != ptr1.func;
 	}
-	bool operator >(const Mapiterator &ptr){
-		return this->func.root > ptr.func.root;
+	friend bool operator >(const Mapiterator &ptr, const Mapiterator &ptr1){
+		return ptr.func > ptr1.func;
 	}
-	bool operator <(const Mapiterator &ptr){
-		return this->func.root < ptr.func.root;
+	friend bool operator <(const Mapiterator &ptr, const Mapiterator &ptr1){
+		return ptr.func > ptr1.func;
 	}
 	~Mapiterator(){
 
@@ -89,20 +95,28 @@ class RevMapiterator
 {
 	public:
 
-	avl_tree<Key, T, Comp> func;
+	map_node<Key, T> *func;
+
+	map_node<Key, T> * findmin(map_node<Key, T> * p) const {
+	return p->left ? findmin(p->left) : p;
+	}
+	map_node<Key, T> * findmax(map_node<Key, T> *p) const { 
+	return p->right ? findmax(p->right) : p; 
+	}
+
 
 
 	RevMapiterator(map_node<Key, T> *ptr){
-		this->func.root = ptr;
+		this->func = ptr;
 	}
 	RevMapiterator(avl_tree<Key, T, Comp> *ptr){
-		this->func = ptr;
+		this->func = ptr->root;
 	}	
 	RevMapiterator(const RevMapiterator &copy){
 		this->func = copy.func;
 	}		
 	RevMapiterator(){
-		this->func.root = NULL;
+		this->func = NULL;
 	}
 
 	RevMapiterator& operator=(const RevMapiterator &ptr){
@@ -110,10 +124,10 @@ class RevMapiterator
 		return (*this);
 	}
 	std::pair<Key, T> *operator->(){
-		return (&this->func.root->pair);
+		return (&this->func->pair);
 	}
 	std::pair<Key, T> &operator*() const {
-		return this->func.root->pair;
+		return this->func->pair;
 	}	
 	RevMapiterator &operator++(){
 		return --this->func;
@@ -132,16 +146,16 @@ class RevMapiterator
 		return temp;
 	}
 
-	bool operator==(const RevMapiterator &ptr){
-		return this->func.root == ptr.func.root;
+	friend bool operator==(const RevMapiterator &ptr, const RevMapiterator &ptr1){
+		return ptr.func == ptr1.func;
 	}
-	bool operator !=(const RevMapiterator &ptr){
-		return this->func.root != ptr.func.root;
+	friend bool operator !=(const RevMapiterator &ptr, const RevMapiterator &ptr1){
+		return ptr.func != ptr1.func;
 	}
-	bool operator >(const RevMapiterator &ptr){
-		return this->func.root > ptr.func.root;
+	friend bool operator >(const RevMapiterator &ptr, const RevMapiterator &ptr1){
+		return ptr.func > ptr1.func;
 	}
-	bool operator <(const RevMapiterator &ptr){
-		return this->func.root < ptr.func.root;
+	friend bool operator <(const RevMapiterator &ptr, const RevMapiterator &ptr1){
+		return ptr.func > ptr1.func;
 	}
 };

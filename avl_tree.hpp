@@ -38,6 +38,7 @@ class map_node
 		this->right = NULL;
 		this->parrent = NULL;
 		this->flag_empty = 0;
+		this->end = false;
 	}
 	map_node &operator= (map_node const &ptr){
 		this->height = ptr.height;
