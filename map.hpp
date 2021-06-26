@@ -205,11 +205,14 @@ struct pair_comp
 		}
 
 		void swap (map& x){
-				avl_tree<Key, T, Compare> tmp = x.start;
+				avl_tree<Key, T, Compare> *tmp = new avl_tree<Key, T, Compare>;
+				tmp->root = x.start.root;
+				tmp->end = x.start.end;
 				x.start = this->start;
 				size_t count_tmp = x.count_map;
 				x.count_map = this->count_map;
-				this->start = tmp;
+				this->start.root = tmp->root;
+				this->start.end = tmp->end;
 				this->count_map = count_tmp;
 		}
 
