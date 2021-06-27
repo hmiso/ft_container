@@ -5,44 +5,41 @@ STL :
 Empty       : false
 Size        : 5
 Max size    : 128102389400760775
-Content     : [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
+Content     : [[-999, Two], [5, Three], [61, Five], [76, Four], [351, One], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
 Max size [✔]: 128102389400760775
-Content  [✔]: [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
+Content  [✔]: [[-999, Two], [5, Three], [61, Five], [76, Four], [351, One], ]
 ══════════════════════════════════════════════════════════════
 
 ══════════════════════════════════════════════════════════════
-maps attributes : 
-STL : 
-Empty       : false
-Size        : 5
-Max size    : 128102389400760775
-Content     : [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
+Value from :
+STL    : 351
+FT  [✔]: 351
+══════════════════════════════════════════════════════════════
 
-FT : 
-Empty    [✔]: false
-Size     [✔]: 5
-Max size [✔]: 128102389400760775
-Content  [✔]: [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
+══════════════════════════════════════════════════════════════
+Value from :
+STL    : One
+FT  [✔]: One
 ══════════════════════════════════════════════════════════════
 
 Code executed:
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-const int range_int[] = {478, 952, 12, -96, -9};
+const int range_int[] = {351, -999, 5, 76, 61};
 const std::string range_str[] = {"One", "Two", "Three", "Four", "Five"};
 ft::map<int, std::string> ft_map;
 for (int i = 0; i < 5; i++)
     ft_map.insert(std::make_pair(range_int[i], range_str[i]));
-ft::map<int, std::string> ft_map_copy = ft_map;
+ft::map<int, std::string>::iterator ft_it = ft_map.lower_bound(80);
 
 Compared with:
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
-const int range_int[] = {478, 952, 12, -96, -9};
+const int range_int[] = {351, -999, 5, 76, 61};
 const std::string range_str[] = {"One", "Two", "Three", "Four", "Five"};
 std::map<int, std::string> stl_map;
 for (int i = 0; i < 5; i++)
     stl_map.insert(std::make_pair(range_int[i], range_str[i]));
-std::map<int, std::string> stl_map_copy = stl_map;
+std::map<int, std::string>::iterator stl_it = stl_map.lower_bound(80);

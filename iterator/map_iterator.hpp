@@ -10,11 +10,11 @@ class Mapiterator
 
 	map_node<Key, T> *func;
 
-	map_node<Key, T> * findmin(map_node<Key, T> * p) const {
-	return p->left ? findmin(p->left) : p;
+	map_node<Key, T> * findmini(map_node<Key, T> * p) const {
+	return p->left ? findmini(p->left) : p;
 	}
-	map_node<Key, T> * findmax(map_node<Key, T> *p) const { 
-	return p->right ? findmax(p->right) : p; 
+	map_node<Key, T> * findmaxi(map_node<Key, T> *p) const { 
+	return p->right ? findmaxi(p->right) : p; 
 	}
 
 	Mapiterator(map_node<Key, T> *ptr){
@@ -42,7 +42,7 @@ class Mapiterator
 	}
 	Mapiterator &operator++(){
 	if (this->func->right)
-		this->func = this->findmin(this->func->right);
+		this->func = this->findmini(this->func->right);
 	else {
 			while (this->func->parrent && this->func->parrent->right == this->func){
 				this->func = this->func->parrent;
@@ -53,7 +53,7 @@ class Mapiterator
 	}
 	Mapiterator &operator--(){
 	if (this->func->left)
-		this->func = this->findmax(this->func->left);
+		this->func = this->findmaxi(this->func->left);
 	else {
 			while (this->func->parrent && this->func->parrent->left == this->func){
 				this->func = this->func->parrent;
@@ -97,11 +97,11 @@ class RevMapiterator
 
 	map_node<Key, T> *func;
 
-	map_node<Key, T> * findmin(map_node<Key, T> * p) const {
-	return p->left ? findmin(p->left) : p;
+	map_node<Key, T> * findmini(map_node<Key, T> * p) const {
+		return p->left ? findmini(p->left) : p;
 	}
-	map_node<Key, T> * findmax(map_node<Key, T> *p) const { 
-	return p->right ? findmax(p->right) : p; 
+	map_node<Key, T> * findmaxi(map_node<Key, T> *p) const { 
+		return p->right ? findmaxi(p->right) : p; 
 	}
 
 
@@ -130,10 +130,27 @@ class RevMapiterator
 		return this->func->pair;
 	}	
 	RevMapiterator &operator++(){
-		return --this->func;
-	}
+		if (this->func->left)
+			this->func = this->findmaxi(this->func->left);
+		else {
+				while (this->func->parrent && this->func->parrent->left == this->func){
+					this->func = this->func->parrent;
+				}
+				this->func = this->func->parrent;
+			}
+			return (*this);
+		}
+
 	RevMapiterator &operator--(){
-		return ++this->func;
+		if (this->func->right)
+			this->func = this->findmini(this->func->right);
+		else {
+				while (this->func->parrent && this->func->parrent->right == this->func){
+					this->func = this->func->parrent;
+				}
+				this->func = this->func->parrent;
+			}
+			return (*this);
 	}
 	RevMapiterator operator++(int) {
 		RevMapiterator temp(*this);

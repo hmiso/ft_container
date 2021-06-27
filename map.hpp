@@ -21,6 +21,13 @@ struct pair_comp
     }
 };
 
+template< class T >
+struct less {
+	bool operator()( const T& lhs, const T& rhs ) const {
+		return lhs < rhs;
+	}
+};
+
 	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > > class map{
 	public:
 		typedef Key													key_type;
@@ -32,41 +39,45 @@ struct pair_comp
 		typedef const T&											const_reference;
 		typedef T*													pointer;
 		typedef const T*											const_pointer;
-		typedef Mapiterator<Key, T, Compare>									iterator;
-		typedef Mapiterator<Key, T, Compare>									const_iterator;
-		typedef RevMapiterator<Key, T, Compare>								reverse_iterator;
-		typedef RevMapiterator<Key, T, Compare>								const_reverse_iterator;
+		typedef Mapiterator<Key, T, Compare>						iterator;
+		typedef Mapiterator<Key, T, Compare>						const_iterator;
+		typedef RevMapiterator<Key, T, Compare>						reverse_iterator;
+		typedef RevMapiterator<Key, T, Compare>						const_reverse_iterator;
 		typedef ptrdiff_t 											difference_type;
 		typedef size_t												size_type;
-		typedef avl_tree<key_type, T, Compare>								tree;
+		typedef avl_tree<key_type, T, Compare>						tree;
 		typedef pair_comp<value_type, key_compare> 					value_compare;
+		typedef typename allocator_type::template rebind<map_node<Key, T>>::other	node_alloc_type;
 		private:
 		avl_tree<Key, T, Compare>  start;
+
 		size_t count_map;
 		key_compare comp;
-
+		allocator_type _alloc;
+		node_alloc_type _mx;
 		public:
 		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()){
 			this->count_map = 0;
+			this->_alloc = alloc;
 		}
 		
 		map (iterator first, iterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()){
 			this->count_map = 0;
+			this->_alloc = alloc;
 			while (first != last) {
 				this->insert(*first);
 				++first;
-				this->count_map++;
 			}
 		}
 		
 		map (const map& x){
-			this->count_map = 0;			
+			this->count_map = 0;
+			this->_alloc = x._alloc;
 			iterator beg = x.begin();
 			iterator en = x.end();
 			while (beg != en){
 				this->insert(*beg);
 				++beg;
-				this->count_map++;
 			}
 			
 		}
@@ -74,6 +85,7 @@ struct pair_comp
 		~map(){
 			if (this->start.root)
 				this->start.deletes(this->start.root);
+
 		}
 
 		map &operator=(const map<Key, T> &other){
@@ -96,24 +108,38 @@ struct pair_comp
 		}
 
 		iterator end(){
-			if (this->start.root->right->end == true){
+			if (!this->start.root){
 				return this->start.root;
 			}
 			return (this->start.end);
 		}
 
 		const_iterator end() const{
+			if (!this->start.root){
+				return this->start.root;
+			}			
 			return (this->start.end);
 		}
 
 		reverse_iterator rbegin(){
-			return reverse_iterator(this->start.end);
+			return reverse_iterator(this->start.end->parrent);
 		}
 
 		const_reverse_iterator rbegin() const{
-			return const_reverse_iterator(this->start.end);
+			return const_reverse_iterator(this->start.end->parrent);
 		}
-
+		reverse_iterator rend() {
+			if (!this->start.root){
+				return this->start.root;
+			}
+			return (reverse_iterator(this->start.get_start()));
+		}
+		const_reverse_iterator rend() const {
+			if (!this->start.root){
+				return this->start.root;
+			}			
+			return (const_reverse_iterator(this->start.get_start()));
+		}
 		bool empty() const{
 			if (this->count_map == 0){
 				return true;
@@ -127,7 +153,7 @@ struct pair_comp
 		}
 
 		size_type max_size() const{
-			return allocator_type().max_size();
+			return this->_mx.max_size();
 		}
 
 		mapped_type& operator[] (const key_type& k){
@@ -181,14 +207,16 @@ struct pair_comp
 
 		size_type erase (const key_type& k){
 			size_type count = 0;
-			iterator it = this->begin();
-			iterator it2 = this->end();
-			while (it != it2){
-				if (it->first == k){
-					this->start.remove(*it);
+			iterator first;
+			iterator last;
+			while (first != last) {
+				iterator tmp = first++;
+				if (first->first == k){
+					erase(tmp);
 					count++;
-					--this->count_map;
+					this->count_map--;
 				}
+				erase(tmp);
 			}
 			return count;
 		}
@@ -219,6 +247,11 @@ struct pair_comp
 
 		void clear(){
 			erase(this->begin(), this->end());
+			if (this->start.root){
+				delete this->start.root;
+				this->start.root = NULL;
+				this->start.end = NULL;
+			}
 		}
 
 		key_compare key_comp() const{
@@ -274,8 +307,6 @@ struct pair_comp
 			iterator i = begin();
 			while (i != end() && comp(i->first, k))
 				++i;
-			if (i != end())
-				++i;
 			return i;			
 		}
 
@@ -288,14 +319,14 @@ struct pair_comp
 			return i;			
 		}
 
+
 		std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const{
 			return std::pair<const_iterator,const_iterator>(lower_bound(k), upper_bound(k));
 		}
 
-		std::pair<iterator,iterator> equal_range (const key_type& k){
+		std::pair<iterator,iterator> equal_range (const key_type& k) {
 			return std::pair<iterator,iterator>(lower_bound(k), upper_bound(k));
 		}
-
 			friend bool operator==( const ft::map<Key, T, Compare, Alloc>& lhs, const ft::map<Key, T, Compare, Alloc>& rhs ) {
 			const_iterator i = lhs.begin();
 			const_iterator j = rhs.begin();
