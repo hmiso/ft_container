@@ -210,16 +210,14 @@ struct less {
 
 		size_type erase (const key_type& k){
 			size_type count = 0;
-			iterator first;
-			iterator last;
+			iterator first = this->begin();
+			iterator last = this->end();
 			while (first != last) {
 				iterator tmp = first++;
-				if (first->first == k){
+				if (tmp->first == k){
 					erase(tmp);
 					count++;
-					this->count_map--;
 				}
-				erase(tmp);
 			}
 			return count;
 		}
@@ -229,6 +227,8 @@ struct less {
 				iterator tmp = first++;
 				erase(tmp);
 			}
+			if (first == this->start.get_end())
+				delete this->start.end;
 		}
 		void erase (iterator position){
 			start.remove(*position);
@@ -252,6 +252,7 @@ struct less {
 			erase(this->begin(), this->end());
 			if (this->start.root){
 				delete this->start.root;
+				delete this->start.end;
 				this->start.root = NULL;
 				this->start.end = NULL;
 			}
@@ -308,18 +309,25 @@ struct less {
 
 		iterator upper_bound (const key_type& k){
 			iterator i = begin();
-			while (i != end() && comp(i->first, k))
+			iterator i1 = end();			
+			while (i != i1){
+				if (i->first != k && comp(i->first, k) <= 0){
+					return i;
+				}
 				++i;
+			}
 			return i;			
 		}
 
 		const_iterator upper_bound (const key_type& k) const{
 			const_iterator i = begin();
-			while (i != end() && comp(i->first, k))
+			const_iterator i1 = end();			
+			while (i != i1){
+				if (i->first != k && comp(i->first, k) <= 0){
+					return i;
+				}
 				++i;
-			if (i != end() && i->first != k)
-				++i;
-			return i;			
+			}		
 		}
 
 
