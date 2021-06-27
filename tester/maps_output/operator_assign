@@ -4,13 +4,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 288230376151711743
+Max size    : 128102389400760775
 Content     : [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 288230376151711743
+Max size [✔]: 128102389400760775
 Content  [✔]: [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
 ══════════════════════════════════════════════════════════════
 
@@ -19,13 +19,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 288230376151711743
+Max size    : 128102389400760775
 Content     : [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 288230376151711743
+Max size [✔]: 128102389400760775
 Content  [✔]: [[-96, Four], [-9, Five], [12, Three], [478, One], [952, Two], ]
 ══════════════════════════════════════════════════════════════
 

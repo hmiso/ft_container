@@ -75,7 +75,7 @@ class avl_tree{
 		}
 	}
 	map_node<Key, T> *get_start(){
-		map_node<Key, T> *tmp = new map_node<Key, T>;
+		map_node<Key, T> *tmp;
 		tmp->right = this->findmin(this->root);
 		return tmp;
 	}

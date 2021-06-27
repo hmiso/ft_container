@@ -4,13 +4,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 288230376151711743
+Max size    : 128102389400760775
 Content     : [[-77, Five], [62, Two], [98, Four], [345, Three], [554, One], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 288230376151711743
+Max size [✔]: 128102389400760775
 Content  [✔]: [[-77, Five], [62, Two], [98, Four], [345, Three], [554, One], ]
 ══════════════════════════════════════════════════════════════
 
