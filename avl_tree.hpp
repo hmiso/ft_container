@@ -58,10 +58,12 @@ class avl_tree{
 
 	map_node<Key, T> *root;
 	map_node<Key, T> *end;
+	map_node<Key, T> *start;
 	Compare comp;
 	avl_tree &operator=(const avl_tree &ptr){
 		this->root = ptr.root;
 		this->end = ptr.end;
+		this->start = ptr.start;
 		return (*this);
 	}
 	void delete_end(map_node<Key, T> *p) {
@@ -75,9 +77,10 @@ class avl_tree{
 		}
 	}
 	map_node<Key, T> *get_start(){
-		map_node<Key, T> *tmp;
+		map_node<Key, T> *tmp = new map_node<Key, T>;
 		tmp->right = this->findmin(this->root);
-		return tmp;
+		this->start = tmp;
+		return this->start;
 	}
 	void delete_end() {
 		if (!root)
@@ -109,9 +112,12 @@ class avl_tree{
 	avl_tree(){
 		this->root = NULL;
 		this->end = NULL;
+		this->start = NULL;
 	}
 	avl_tree(const avl_tree &ptr){
 		this->root = ptr.root;
+		this->end = ptr.end;
+		this->start = ptr.start;
 	}
 	unsigned char height(map_node<Key, T>* p)
 	{
@@ -337,6 +343,7 @@ class avl_tree{
 		}
 		return insert(this->root, this->root, k, val);
 	}
+
 	void insert(map_node<Key, T> *elem, std::pair<Key, T> val)
 	{
 		delete_end();

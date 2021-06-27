@@ -85,7 +85,9 @@ struct less {
 		~map(){
 			if (this->start.root)
 				this->start.deletes(this->start.root);
-
+			if (this->start.start) {
+				delete this->start.start;
+			}
 		}
 
 		map &operator=(const map<Key, T> &other){
@@ -138,7 +140,7 @@ struct less {
 		const_reverse_iterator rend() const {
 			if (!this->start.root){
 				return this->start.root;
-			}			
+			}		
 			return (const_reverse_iterator(this->start.get_start()));
 		}
 		bool empty() const{

@@ -104,8 +104,6 @@ class RevMapiterator
 		return p->right ? findmaxi(p->right) : p; 
 	}
 
-
-
 	RevMapiterator(map_node<Key, T> *ptr){
 		this->func = ptr;
 	}
