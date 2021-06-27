@@ -4,13 +4,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 128102389400760775
+Max size    : 288230376151711743
 Content     : [[-98, Four], [8, Five], [32, Three], [489, One], [851, Two], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 128102389400760775
+Max size [✔]: 288230376151711743
 Content  [✔]: [[-98, Four], [8, Five], [32, Three], [489, One], [851, Two], ]
 ══════════════════════════════════════════════════════════════
 
@@ -19,13 +19,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 128102389400760775
+Max size    : 288230376151711743
 Content     : [[22, Four], [128, Five], [152, Three], [609, One], [971, Two], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 128102389400760775
+Max size [✔]: 288230376151711743
 Content  [✔]: [[22, Four], [128, Five], [152, Three], [609, One], [971, Two], ]
 ══════════════════════════════════════════════════════════════
 
@@ -34,13 +34,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 128102389400760775
+Max size    : 288230376151711743
 Content     : [[22, Four], [128, Five], [152, Three], [609, One], [971, Two], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 128102389400760775
+Max size [✔]: 288230376151711743
 Content  [✔]: [[22, Four], [128, Five], [152, Three], [609, One], [971, Two], ]
 ══════════════════════════════════════════════════════════════
 
@@ -49,13 +49,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 5
-Max size    : 128102389400760775
+Max size    : 288230376151711743
 Content     : [[-98, Four], [8, Five], [32, Three], [489, One], [851, Two], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 5
-Max size [✔]: 128102389400760775
+Max size [✔]: 288230376151711743
 Content  [✔]: [[-98, Four], [8, Five], [32, Three], [489, One], [851, Two], ]
 ══════════════════════════════════════════════════════════════
 

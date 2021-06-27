@@ -47,7 +47,7 @@ struct less {
 		typedef size_t												size_type;
 		typedef avl_tree<key_type, T, Compare>						tree;
 		typedef pair_comp<value_type, key_compare> 					value_compare;
-		typedef typename allocator_type::template rebind<map_node<Key, T>>::other	node_alloc_type;
+		typedef typename allocator_type::template rebind<map_node<Key, T> >::other	node_alloc_type;
 		private:
 		avl_tree<Key, T, Compare>  start;
 

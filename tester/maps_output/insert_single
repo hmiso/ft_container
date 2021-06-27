@@ -4,13 +4,13 @@ maps attributes :
 STL : 
 Empty       : false
 Size        : 1
-Max size    : 128102389400760775
+Max size    : 288230376151711743
 Content     : [[42, La famille], ]
 
 FT : 
 Empty    [✔]: false
 Size     [✔]: 1
-Max size [✔]: 128102389400760775
+Max size [✔]: 288230376151711743
 Content  [✔]: [[42, La famille], ]
 ══════════════════════════════════════════════════════════════
 
