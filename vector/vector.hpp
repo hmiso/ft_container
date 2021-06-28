@@ -6,7 +6,7 @@
 /*   By: hmiso <hmiso@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 21:31:11 by hmiso             #+#    #+#             */
-/*   Updated: 2021/06/28 20:15:51 by hmiso            ###   ########.fr       */
+/*   Updated: 2021/06/28 21:52:54 by hmiso            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,15 +252,14 @@ namespace ft{
 			
 			iterator insert (iterator position, const value_type& val){
 				size_type n = (position - this->begin());
-				vector temp(position, this->end());
-				this->size_vecror = this->end() - position -1;
-				this->push_back(val);
-				iterator start = temp.begin();
-				iterator end = temp.end();
-				while (start != end){
-					this->push_back(*start);
-					++start;
+				if (this->end() != position){
+					this->ptr[position - this->begin()] = val;
 				}
+				else
+				{
+					this->push_back(val);
+				}
+				
 				return (iterator(&this->ptr[n]));
 			}
 			void insert (iterator position, size_type n, const value_type& val){
